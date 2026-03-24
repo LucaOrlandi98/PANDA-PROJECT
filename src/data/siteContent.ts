@@ -32,19 +32,9 @@ export const primaryNav: NavItem[] = [
 
 export const menuNav: NavItem[] = [
   {
-    label: "Resources",
-    to: "/resources",
-    description: "Checklist, setup e strumenti utili.",
-  },
-  {
-    label: "Support",
-    to: "/support",
-    description: "Aggiornamenti, supporto e contatti utili.",
-  },
-  {
-    label: "Partner",
-    to: "/partners",
-    description: "Collaborazioni e sponsor in modo ordinato.",
+    label: "Altro",
+    to: "/journal/altro",
+    description: "Testi, riferimenti, materiali e contenuti laterali.",
   },
   {
     label: "Contatti",

@@ -635,6 +635,7 @@
 }
 
 .journal-log-item__summary {
+  position: relative;
   display: grid;
   grid-template-columns: auto 1fr;
   gap: var(--space-md);
@@ -669,7 +670,6 @@
 
 .journal-log-item__head {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   gap: var(--space-md);
   min-width: 0;
@@ -681,6 +681,9 @@
 }
 
 .journal-log-item__toggle {
+  position: absolute;
+  top: 1.25rem;
+  right: 0.1rem;
   width: 0.8rem;
   height: 0.8rem;
   flex: 0 0 auto;
@@ -796,6 +799,82 @@
   font-size: 1.15rem;
   line-height: 1.05;
   overflow-wrap: anywhere;
+}
+
+.coming-soon-page {
+  min-height: calc(100dvh - var(--nav-offset-top) - var(--nav-height) - var(--page-offset-from-nav-mobile));
+}
+
+.coming-soon {
+  min-height: inherit;
+  place-items: center;
+  align-content: center;
+  justify-items: center;
+  text-align: center;
+  gap: var(--space-lg);
+}
+
+.coming-soon__pulse {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(11rem, 42vw);
+  aspect-ratio: 1;
+}
+
+.coming-soon__pulse::before,
+.coming-soon__pulse::after,
+.coming-soon__pulse-core {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(125, 224, 206, 0.35);
+  border-radius: 999px;
+}
+
+.coming-soon__pulse::before {
+  animation: coming-pulse 2.4s ease-out infinite;
+}
+
+.coming-soon__pulse::after {
+  animation: coming-pulse 2.4s ease-out 0.8s infinite;
+}
+
+.coming-soon__pulse-core {
+  inset: 28%;
+  background:
+    radial-gradient(circle, rgba(125, 224, 206, 0.8), rgba(125, 224, 206, 0.18) 62%, transparent 64%);
+  border-color: rgba(125, 224, 206, 0.5);
+  animation: coming-core 1.8s ease-in-out infinite;
+}
+
+@keyframes coming-pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+
+  30% {
+    opacity: 0.65;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes coming-core {
+  0%,
+  100% {
+    transform: scale(0.92);
+    opacity: 0.78;
+  }
+
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 /* Tags and CTA */
@@ -944,7 +1023,7 @@
 
   .journal-log-item__summary {
     gap: 0.85rem;
-    padding: 0.9rem 0;
+    padding: 0.9rem 2rem 0.9rem 0;
   }
 
   .journal-log-item__body h3 {
@@ -953,7 +1032,9 @@
 
   .journal-log-item__content {
     margin-left: 0;
-    padding: 0 0 1.15rem calc(2rem + 0.85rem);
+    width: 100%;
+    max-width: none;
+    padding: 0 0 1.15rem;
   }
 
   .roadbook-page__map .map-frame,
@@ -1017,6 +1098,10 @@
 
   .roadbook-page__metrics {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .coming-soon-page {
+    min-height: calc(100dvh - var(--nav-offset-top) - var(--nav-height) - var(--page-offset-from-nav-tablet));
   }
 
   .journal-hub-grid {
