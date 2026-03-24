@@ -83,13 +83,13 @@ export const journalSections = [
   },
   {
     label: "02",
-    meta: `${journalLog.length} voci`,
+    meta: "coming soon",
     title: "Diario di bordo",
     to: "/journal/diario",
   },
   {
     label: "03",
-    meta: `${journalOther.length} blocchi`,
+    meta: "coming soon",
     title: "Altro",
     to: "/journal/altro",
   },

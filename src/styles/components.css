@@ -723,6 +723,7 @@
 
 .journal-log-item__content p {
   color: var(--text-muted);
+  overflow-wrap: anywhere;
 }
 
 .journal-other-grid {
@@ -1110,7 +1111,7 @@
   }
 
   .journal-photo-page__stats {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .journal-photo-showcase__side,
@@ -1234,6 +1235,10 @@
   }
 
   .journal-hub-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .journal-photo-page__stats {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 

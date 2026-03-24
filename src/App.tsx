@@ -16,6 +16,11 @@ import { RoutePage } from "./pages/RoutePage";
 import { SupportPage } from "./pages/SupportPage";
 
 const INSTAGRAM_URL = "https://www.instagram.com/lucaorlandi____/";
+const CONTACT_NAV_ITEM = {
+  label: "Contatti",
+  to: "/contact",
+  description: "Come scrivermi o proporre qualcosa.",
+} as const;
 
 const pageLabels: Record<string, string> = {
   "/": "Home",
@@ -49,6 +54,10 @@ function AppShell() {
   const visiblePrimaryNav = primaryNav.filter(
     (item) => item.to !== activePrimarySection,
   );
+  const desktopNavItems =
+    location.pathname === "/contact"
+      ? visiblePrimaryNav
+      : [...visiblePrimaryNav, CONTACT_NAV_ITEM];
 
   useEffect(() => {
     setMenuOpen(false);
@@ -75,7 +84,7 @@ function AppShell() {
         currentLabel={currentLabel}
         instagramUrl={INSTAGRAM_URL}
         isHome={isHome}
-        items={visiblePrimaryNav}
+        items={desktopNavItems}
         onMenuOpen={() => setMenuOpen(true)}
       />
 

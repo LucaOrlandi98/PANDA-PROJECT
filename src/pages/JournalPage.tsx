@@ -8,8 +8,8 @@ export function JournalPage() {
         <p className="eyebrow">Journal</p>
         <h1>Journal</h1>
         <p className="journal-page__lead">
-          Tre aree chiare per dare al progetto un archivio leggibile: immagini, diario di bordo e
-          materiali laterali.
+          Tre aree chiare per dare al progetto un archivio leggibile: foto attive, diario di
+          bordo e materiali laterali in aggiornamento.
         </p>
       </section>
 
