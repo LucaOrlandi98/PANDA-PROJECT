@@ -3,6 +3,7 @@ import { PageHeader } from "../components/PageHeader";
 import { SectionIntro } from "../components/SectionIntro";
 import { SupportCard } from "../components/SupportCard";
 import { partnerNotes, supportOptions } from "../data/siteContent";
+import { asset } from "../lib/asset";
 
 export function SupportPage() {
   return (
@@ -11,7 +12,7 @@ export function SupportPage() {
         eyebrow="Support / Community"
         title="Seguire il progetto sul serio"
         lead="Aggiornamenti, supporto e suggerimenti utili. Community prima, rumore dopo."
-        image="/assets/images/panda-front-garage.jpg"
+        image={asset("assets/images/panda-front-garage.jpg")}
         status="Community first"
       />
 

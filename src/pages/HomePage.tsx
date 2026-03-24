@@ -1,6 +1,7 @@
 import { FeatureCard } from "../components/FeatureCard";
 import { MobileHero } from "../components/MobileHero";
 import { hubCards } from "../data/siteContent";
+import { asset } from "../lib/asset";
 
 export function HomePage() {
   return (
@@ -9,7 +10,7 @@ export function HomePage() {
         className="hero-card--home"
         eyebrow="Panda Project"
         title="Questa e PandAnna"
-        image="/assets/images/panda-hero-snow.jpg"
+        image={asset("assets/images/panda-hero-snow.jpg")}
         modelSrc="https://dl.dropboxusercontent.com/scl/fi/lzrhfrj36kyjmq6166g4x/PANDA-3D.glb?rlkey=11rwtnihpn3ry6x4hjzo3injv"
       />
 

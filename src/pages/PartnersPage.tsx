@@ -2,6 +2,7 @@ import { CTASection } from "../components/CTASection";
 import { PageHeader } from "../components/PageHeader";
 import { SectionIntro } from "../components/SectionIntro";
 import { partnerNotes } from "../data/siteContent";
+import { asset } from "../lib/asset";
 
 export function PartnersPage() {
   return (
@@ -10,7 +11,7 @@ export function PartnersPage() {
         eyebrow="Partner / Sponsor"
         title="Collaborazioni nel posto giusto"
         lead="Partner e sponsor hanno spazio solo se aiutano mezzo, sicurezza o contenuti."
-        image="/assets/images/panda-underbody.jpg"
+        image={asset("assets/images/panda-underbody.jpg")}
         status="Sezione secondaria"
       />
 

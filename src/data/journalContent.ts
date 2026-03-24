@@ -1,23 +1,25 @@
+import { asset } from "../lib/asset";
+
 export const journalGallery = [
   {
     alt: "PandAnna nella neve",
-    src: "/assets/images/panda-hero-snow.jpg",
+    src: asset("assets/images/panda-hero-snow.jpg"),
   },
   {
     alt: "Dettaglio del ponte e del gruppo ruota",
-    src: "/assets/images/panda-axle.jpg",
+    src: asset("assets/images/panda-axle.jpg"),
   },
   {
     alt: "PandAnna vista frontale in garage",
-    src: "/assets/images/panda-front-garage.jpg",
+    src: asset("assets/images/panda-front-garage.jpg"),
   },
   {
     alt: "Dettaglio del fondo e della ruggine",
-    src: "/assets/images/panda-rust-floor.jpg",
+    src: asset("assets/images/panda-rust-floor.jpg"),
   },
   {
     alt: "Sottoscocca della Panda in lavorazione",
-    src: "/assets/images/panda-underbody.jpg",
+    src: asset("assets/images/panda-underbody.jpg"),
   },
 ] as const;
 

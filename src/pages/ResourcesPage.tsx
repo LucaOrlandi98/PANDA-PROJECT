@@ -3,6 +3,7 @@ import { PageHeader } from "../components/PageHeader";
 import { ResourceCard } from "../components/ResourceCard";
 import { SectionIntro } from "../components/SectionIntro";
 import { resources } from "../data/siteContent";
+import { asset } from "../lib/asset";
 
 export function ResourcesPage() {
   return (
@@ -11,7 +12,7 @@ export function ResourcesPage() {
         eyebrow="Resources"
         title="Valore pratico"
         lead="Checklist, setup, ricambi e budget. Il progetto deve restare utile anche prima della partenza."
-        image="/assets/images/panda-axle.jpg"
+        image={asset("assets/images/panda-axle.jpg")}
         status="Base pratica"
       />
 

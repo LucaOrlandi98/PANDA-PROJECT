@@ -2,6 +2,7 @@ import { CTASection } from "../components/CTASection";
 import { PageHeader } from "../components/PageHeader";
 import { SectionIntro } from "../components/SectionIntro";
 import { contactChannels } from "../data/siteContent";
+import { asset } from "../lib/asset";
 
 export function ContactPage() {
   return (
@@ -10,7 +11,7 @@ export function ContactPage() {
         eyebrow="Contatti"
         title="Scrivimi se serve davvero"
         lead="Tappe, contatti, supporti tecnici o collaborazioni sensate. Meglio diretto che generico."
-        image="/assets/images/panda-hero-snow.jpg"
+        image={asset("assets/images/panda-hero-snow.jpg")}
         status="Canali essenziali"
       />
 
