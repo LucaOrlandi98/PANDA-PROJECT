@@ -64,7 +64,7 @@ export const timeline: TimelineItem[] = [
     phase: "01",
     title: "Idea",
     description:
-      "Trasformare il bisogno di movimento, cambiamento e autonomia in un progetto costruito intorno a un veicolo capace di stare davvero su strada.",
+      "Trasformare il bisogno di movimento, cambiamento e autonomia in un progetto costruito intorno a un veicolo semplice ed economico.",
     status: "done",
   },
   {
@@ -125,9 +125,9 @@ export const pandaSpecs: VehicleSpec[] = [
   },
   {
     label: "Filosofia",
-    value: "Viaggio leggero e reale",
+    value: "Viaggio leggero ed essenziale",
     note:
-      "Una Panda, una rotta aperta e l'idea che il valore del viaggio stia in cio che genera lungo il percorso.",
+      "Una vecchia Panda, una rotta aperta e l'idea di partire senza programmare il ritorno",
   },
   {
     label: "Direzione",

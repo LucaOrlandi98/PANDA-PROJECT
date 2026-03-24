@@ -1,8 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import maplibregl, {
-  type GeoJSONSource,
-  type StyleSpecification,
-} from "maplibre-gl";
+import maplibregl, { type GeoJSONSource } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 
 const WEBAPP_BASE =
@@ -12,31 +9,13 @@ const DATA_URL = `${WEBAPP_BASE}?action=getLast&deviceId=${encodeURIComponent(
   DEVICE_ID,
 )}`;
 
-const DEFAULT_RADIUS_M = 4000;
 const POLL_MS = 20000;
 const START_ZOOM = 13;
 const STALE_HOURS = 24;
+const DEFAULT_RADIUS_M = 4000;
 const DEFAULT_CENTER = { lat: 45.57, lng: 10.24 };
+const STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
 const EARTH_R = 6371000;
-
-const MAP_STYLE: StyleSpecification = {
-  version: 8,
-  sources: {
-    osm: {
-      type: "raster",
-      tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
-      tileSize: 256,
-      attribution: "(c) OpenStreetMap contributors",
-    },
-  },
-  layers: [
-    {
-      id: "osm",
-      type: "raster",
-      source: "osm",
-    },
-  ],
-};
 
 type CircleFeature = {
   type: "Feature";
@@ -45,6 +24,14 @@ type CircleFeature = {
     coordinates: number[][][];
   };
   properties: Record<string, never>;
+};
+
+type LivePoint = {
+  lat: number;
+  lng: number;
+  ts: number | null;
+  mode: string;
+  radiusM: number;
 };
 
 function toMs(ts: unknown) {
@@ -85,12 +72,7 @@ function formatAge(tsMs: number | null) {
   return `${Math.floor(minutes / 60)}h`;
 }
 
-function destPoint(
-  lat: number,
-  lng: number,
-  bearingRad: number,
-  distM: number,
-) {
+function destPoint(lat: number, lng: number, bearingRad: number, distM: number) {
   const phi1 = (lat * Math.PI) / 180;
   const lambda1 = (lng * Math.PI) / 180;
   const delta = distM / EARTH_R;
@@ -153,49 +135,87 @@ function bboxFromPolygon(feature: CircleFeature) {
   ] as [[number, number], [number, number]];
 }
 
+async function fetchPublic(): Promise<LivePoint> {
+  const response = await fetch(DATA_URL, { cache: "no-store" });
+  const payload = await response.json();
+
+  if (!payload || payload.ok !== true) {
+    throw new Error(payload?.err || "bad payload");
+  }
+
+  if (typeof payload.lat !== "number" || typeof payload.lon !== "number") {
+    throw new Error("missing lat/lon");
+  }
+
+  return {
+    lat: payload.lat,
+    lng: payload.lon,
+    ts: toMs(payload.ts),
+    mode: String(payload.mode || ""),
+    radiusM: typeof payload.radiusM === "number" ? payload.radiusM : DEFAULT_RADIUS_M,
+  };
+}
+
 export function LiveMapCanvas() {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const badgeRef = useRef<HTMLDivElement | null>(null);
-  const fitButtonRef = useRef<HTMLButtonElement | null>(null);
+  const mapRef = useRef<maplibregl.Map | null>(null);
+  const markerRef = useRef<maplibregl.Marker | null>(null);
+  const pollIdRef = useRef<number | null>(null);
+  const resizeObserverRef = useRef<ResizeObserver | null>(null);
+  const intersectionObserverRef = useRef<IntersectionObserver | null>(null);
+  const initPointRef = useRef(DEFAULT_CENTER);
+  const lastTsRef = useRef<number | null>(null);
+  const lastRadiusRef = useRef(DEFAULT_RADIUS_M);
+  const lastCenterKeyRef = useRef<string | null>(null);
+  const [badge, setBadge] = useState("loading...");
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const wrap = wrapRef.current;
     const container = containerRef.current;
-    const fitButton = fitButtonRef.current;
 
-    if (!wrap || !container || !fitButton) {
+    if (!wrap || !container) {
       return;
     }
 
     let cancelled = false;
-    let map: maplibregl.Map | null = null;
-    let marker: maplibregl.Marker | null = null;
-    let pollId: number | null = null;
-    let resizeObserver: ResizeObserver | null = null;
-    let cleanupFitButton: (() => void) | null = null;
     let cleanupWindowResize: (() => void) | null = null;
-    let lastTsMs = 0;
-    let lastCenterKey: string | null = null;
-    let lastRadiusM = DEFAULT_RADIUS_M;
 
-    const setBadge = (value: string) => {
-      if (!cancelled && badgeRef.current) {
-        badgeRef.current.textContent = value;
+    const forceResize = () => {
+      const map = mapRef.current;
+
+      if (!map || cancelled) {
+        return;
+      }
+
+      try {
+        map.resize();
+      } catch {
+        // Ignore resize errors during mount.
       }
     };
 
+    const scheduleResizeBurst = () => {
+      [0, 80, 220, 420, 900].forEach((delay) => {
+        window.setTimeout(() => {
+          forceResize();
+        }, delay);
+      });
+    };
+
     const ensureMarker = (lat: number, lng: number) => {
+      const map = mapRef.current;
+
       if (!map) {
         return;
       }
 
-      if (!marker) {
+      if (!markerRef.current) {
         const element = document.createElement("div");
         element.className = "panda-marker";
 
-        marker = new maplibregl.Marker({
+        markerRef.current = new maplibregl.Marker({
           element,
           anchor: "center",
         })
@@ -205,10 +225,12 @@ export function LiveMapCanvas() {
         return;
       }
 
-      marker.setLngLat([lng, lat]);
+      markerRef.current.setLngLat([lng, lat]);
     };
 
     const ensureCircle = (lat: number, lng: number, radiusM: number) => {
+      const map = mapRef.current;
+
       if (!map) {
         return;
       }
@@ -249,6 +271,8 @@ export function LiveMapCanvas() {
     };
 
     const fitCircle = (lat: number, lng: number, radiusM: number) => {
+      const map = mapRef.current;
+
       if (!map) {
         return;
       }
@@ -263,76 +287,50 @@ export function LiveMapCanvas() {
       });
     };
 
-    const fetchPublic = async () => {
-      const response = await fetch(DATA_URL, { cache: "no-store" });
-      const payload = await response.json();
-
-      if (!payload || payload.ok !== true) {
-        throw new Error(payload?.err || "bad payload");
-      }
-
-      if (typeof payload.lat !== "number" || typeof payload.lon !== "number") {
-        throw new Error("missing lat/lon");
-      }
-
-      return {
-        lat: payload.lat,
-        lng: payload.lon,
-        ts: toMs(payload.ts),
-        mode: String(payload.mode || ""),
-        radiusM:
-          typeof payload.radiusM === "number" ? payload.radiusM : DEFAULT_RADIUS_M,
-      };
-    };
-
-    const forceResize = () => {
-      if (!map || cancelled) {
-        return;
-      }
-
-      try {
-        map.resize();
-      } catch {
-        // Ignore resize errors while mounting.
-      }
-    };
-
     const update = async () => {
       try {
         const point = await fetchPublic();
 
-        if (point.ts) {
-          lastTsMs = point.ts;
+        if (cancelled) {
+          return;
         }
 
-        lastRadiusM = point.radiusM;
+        if (point.ts) {
+          lastTsRef.current = point.ts;
+        }
+
+        lastRadiusRef.current = point.radiusM;
 
         const centerKey = `${point.lat.toFixed(6)},${point.lng.toFixed(
           6,
         )},${point.radiusM}`;
 
-        if (centerKey !== lastCenterKey) {
+        if (centerKey !== lastCenterKeyRef.current) {
           ensureMarker(point.lat, point.lng);
           ensureCircle(point.lat, point.lng, point.radiusM);
-          lastCenterKey = centerKey;
+          lastCenterKeyRef.current = centerKey;
         }
 
         const staleMs = STALE_HOURS * 3600 * 1000;
-        const isStale = lastTsMs && Date.now() - lastTsMs > staleMs;
+        const isStale =
+          lastTsRef.current && Date.now() - lastTsRef.current > staleMs;
         const modeText = point.mode ? ` - ${point.mode.toLowerCase()}` : "";
 
+        setError(null);
         setBadge(
-          `${isStale ? "stale" : "live"} - ${formatAge(lastTsMs)}${modeText} - r:${Math.round(
+          `${isStale ? "stale" : "live"} - ${formatAge(lastTsRef.current)}${modeText} - r:${Math.round(
             point.radiusM / 1000,
           )}km`,
         );
       } catch (fetchError) {
+        if (cancelled) {
+          return;
+        }
+
         setBadge("no data");
         console.warn("[panda live map]", fetchError);
       }
     };
-
-    setBadge("loading...");
 
     void (async () => {
       try {
@@ -344,27 +342,31 @@ export function LiveMapCanvas() {
           initLat = point.lat;
           initLng = point.lng;
           if (point.ts) {
-            lastTsMs = point.ts;
+            lastTsRef.current = point.ts;
           }
-          lastRadiusM = point.radiusM;
+          lastRadiusRef.current = point.radiusM;
         } catch {
-          // Keep fallback center if live data is temporarily unavailable.
+          // Keep fallback center.
         }
 
         if (cancelled) {
           return;
         }
 
-        map = new maplibregl.Map({
+        initPointRef.current = { lat: initLat, lng: initLng };
+
+        const map = new maplibregl.Map({
           container,
-          style: MAP_STYLE,
+          style: STYLE_URL,
           center: [initLng, initLat],
           zoom: START_ZOOM,
           attributionControl: false,
+          interactive: true,
           dragRotate: false,
           pitchWithRotate: false,
-          renderWorldCopies: true,
         });
+
+        mapRef.current = map;
 
         map.addControl(
           new maplibregl.AttributionControl({ compact: true }),
@@ -375,44 +377,43 @@ export function LiveMapCanvas() {
           "top-right",
         );
 
+        resizeObserverRef.current = new ResizeObserver(() => {
+          forceResize();
+        });
+        resizeObserverRef.current.observe(wrap);
+
+        intersectionObserverRef.current = new IntersectionObserver(
+          (entries) => {
+            if (entries[0]?.isIntersecting) {
+              forceResize();
+            }
+          },
+          { threshold: 0.01 },
+        );
+        intersectionObserverRef.current.observe(wrap);
+
+        window.addEventListener("resize", forceResize);
+        cleanupWindowResize = () => {
+          window.removeEventListener("resize", forceResize);
+        };
+
         map.on("load", () => {
           if (cancelled) {
             return;
           }
 
           ensureMarker(initLat, initLng);
-          ensureCircle(initLat, initLng, lastRadiusM);
-          fitCircle(initLat, initLng, lastRadiusM);
-          forceResize();
-          window.setTimeout(forceResize, 120);
-          window.setTimeout(forceResize, 360);
-
-          const handleFitClick = () => {
-            const current = marker
-              ? marker.getLngLat()
-              : { lat: initLat, lng: initLng };
-            fitCircle(current.lat, current.lng, lastRadiusM);
-          };
-
-          fitButton.addEventListener("click", handleFitClick);
-          cleanupFitButton = () =>
-            fitButton.removeEventListener("click", handleFitClick);
-
-          resizeObserver = new ResizeObserver(() => {
-            forceResize();
-          });
-          resizeObserver.observe(wrap);
-
-          window.addEventListener("resize", forceResize);
-          cleanupWindowResize = () =>
-            window.removeEventListener("resize", forceResize);
+          ensureCircle(initLat, initLng, lastRadiusRef.current);
+          fitCircle(initLat, initLng, lastRadiusRef.current);
+          scheduleResizeBurst();
 
           void update();
-          pollId = window.setInterval(() => {
+          pollIdRef.current = window.setInterval(() => {
             void update();
           }, POLL_MS);
         });
 
+        map.on("idle", forceResize);
         map.on("error", (event) => {
           console.warn("[panda live map]", event?.error ?? event);
         });
@@ -427,17 +428,40 @@ export function LiveMapCanvas() {
 
     return () => {
       cancelled = true;
-      cleanupFitButton?.();
       cleanupWindowResize?.();
-      resizeObserver?.disconnect();
+      resizeObserverRef.current?.disconnect();
+      intersectionObserverRef.current?.disconnect();
 
-      if (pollId !== null) {
-        window.clearInterval(pollId);
+      if (pollIdRef.current !== null) {
+        window.clearInterval(pollIdRef.current);
       }
 
-      map?.remove();
+      mapRef.current?.remove();
+      mapRef.current = null;
+      markerRef.current = null;
     };
   }, []);
+
+  const handleFitClick = () => {
+    const map = mapRef.current;
+
+    if (!map) {
+      return;
+    }
+
+    const markerLngLat = markerRef.current?.getLngLat();
+    const targetLat = markerLngLat?.lat ?? initPointRef.current.lat;
+    const targetLng = markerLngLat?.lng ?? initPointRef.current.lng;
+
+    const polygon = circlePolygon(targetLng, targetLat, lastRadiusRef.current, 48);
+    const bounds = bboxFromPolygon(polygon);
+
+    map.fitBounds(bounds, {
+      padding: 24,
+      duration: 350,
+      maxZoom: 16,
+    });
+  };
 
   return (
     <div className="live-map-page__frame">
@@ -448,12 +472,10 @@ export function LiveMapCanvas() {
           className="panda-map"
           ref={containerRef}
         />
-        <button className="panda-btn" ref={fitButtonRef} type="button">
+        <button className="panda-btn" onClick={handleFitClick} type="button">
           Ritrova la Panda
         </button>
-        <div className="panda-badge" ref={badgeRef}>
-          loading...
-        </div>
+        <div className="panda-badge">{badge}</div>
       </div>
     </div>
   );

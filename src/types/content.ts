@@ -27,10 +27,13 @@ export type JournalMediaKind = "photo" | "video";
 
 export type JournalMediaOrientation = "landscape" | "portrait" | "square";
 
+export type JournalMediaCategory = "preparazione" | "test" | "viaggio";
+
 export type JournalMediaItem = {
   id: string;
   alt: string;
   kind: JournalMediaKind;
   orientation: JournalMediaOrientation;
+  category: JournalMediaCategory;
   src: string;
 };
