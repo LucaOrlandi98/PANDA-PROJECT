@@ -56,6 +56,7 @@ export function MobileHero({
   return (
     <section className={`hero-card${className ? ` ${className}` : ""}`}>
       <div className={`hero-media${modelSrc ? " is-model" : ""}`}>
+        {eyebrow ? <p className="hero-media__eyebrow">{eyebrow}</p> : null}
         {modelSrc ? (
           <div className="hero-model">
             <div className={`hero-spinner${isLoaded ? " is-hidden" : ""}`} aria-hidden="true">

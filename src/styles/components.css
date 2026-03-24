@@ -13,6 +13,10 @@
   object-fit: cover;
 }
 
+.hero-media__eyebrow {
+  display: none;
+}
+
 .hero-media.is-model {
   background: transparent;
 }
@@ -832,6 +836,22 @@
     min-height: clamp(11rem, 34vh, 15rem);
   }
 
+  .hero-card--home .hero-media__eyebrow {
+    position: absolute;
+    top: 0.7rem;
+    left: 0.85rem;
+    z-index: 2;
+    display: inline-flex;
+    padding: 0.42rem 0.6rem;
+    background: var(--accent);
+    color: var(--bg);
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
   .hero-card--home .hero-model model-viewer {
     transform: translateY(-0.35rem);
   }
@@ -840,10 +860,16 @@
     gap: 0.65rem;
   }
 
+  .hero-card--home .hero-content .eyebrow {
+    display: none;
+  }
+
   .hero-card--home .hero-content h1 {
-    max-width: 6ch;
-    font-size: clamp(2.7rem, 11vw, 4.1rem);
+    max-width: none;
+    font-size: clamp(1.95rem, 8.6vw, 2.7rem);
     line-height: 0.94;
+    letter-spacing: -0.04em;
+    white-space: nowrap;
   }
 
   .button-row {
