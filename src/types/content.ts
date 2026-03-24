@@ -27,24 +27,10 @@ export type JournalMediaKind = "photo" | "video";
 
 export type JournalMediaOrientation = "landscape" | "portrait" | "square";
 
-type JournalMediaBase = {
+export type JournalMediaItem = {
   id: string;
   alt: string;
-  caption: string;
+  kind: JournalMediaKind;
   orientation: JournalMediaOrientation;
-  title: string;
-};
-
-export type JournalPhoto = JournalMediaBase & {
-  kind: "photo";
   src: string;
 };
-
-export type JournalVideo = JournalMediaBase & {
-  kind: "video";
-  duration?: string;
-  poster?: string;
-  src: string;
-};
-
-export type JournalMediaItem = JournalPhoto | JournalVideo;

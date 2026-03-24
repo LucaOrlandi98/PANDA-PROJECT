@@ -486,40 +486,12 @@
 }
 
 .journal-media-page {
-  gap: var(--space-2xl);
+  gap: var(--space-xl);
 }
 
-.journal-media-page__stats {
-  display: grid;
-  gap: var(--space-md);
-}
-
-.journal-media-stat {
-  display: grid;
-  gap: 0.45rem;
-  padding: 1rem 0 0;
-  border-top: 1px solid var(--line);
-}
-
-.journal-media-stat span {
-  color: var(--accent);
-  font-family: var(--font-display);
-  font-size: 0.74rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.journal-media-stat strong {
-  font-size: 1.15rem;
-  line-height: 1.05;
-}
-
-.journal-media-stage,
-.journal-media-rail,
 .journal-media-grid {
   display: grid;
-  gap: var(--space-md);
+  gap: var(--space-sm);
 }
 
 .journal-media-grid {
@@ -527,32 +499,17 @@
 }
 
 .journal-media-card {
-  display: grid;
   overflow: hidden;
   border: 1px solid var(--line);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0)),
-    var(--surface-card);
+  background: var(--surface-card);
   transition:
-    transform var(--transition-base),
     border-color var(--transition-base),
     background-color var(--transition-base);
 }
 
 .journal-media-card__frame {
-  position: relative;
   overflow: hidden;
-  background:
-    radial-gradient(circle at top, rgba(125, 224, 206, 0.08), transparent 52%),
-    var(--bg-deep);
-}
-
-.journal-media-card__frame::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.14));
-  pointer-events: none;
+  background: var(--bg-deep);
 }
 
 .journal-media-card__asset {
@@ -563,63 +520,13 @@
   transition: transform var(--transition-base);
 }
 
-.journal-media-card__body {
-  display: grid;
-  gap: 0.65rem;
-  padding: 1rem;
-}
-
-.journal-media-card__meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-}
-
-.journal-media-card__tag {
-  display: inline-flex;
-  align-items: center;
-  min-height: 1.75rem;
-  padding: 0.18rem 0.55rem;
-  border: 1px solid var(--line-strong);
-  color: var(--text-muted);
-  font-family: var(--font-display);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.journal-media-card__tag--photo {
-  color: var(--text);
-}
-
-.journal-media-card__tag--video {
-  border-color: rgba(125, 224, 206, 0.45);
-  color: var(--accent);
-}
-
-.journal-media-card strong {
-  font-size: clamp(1.05rem, 2vw, 1.35rem);
-  line-height: 1.02;
-}
-
-.journal-media-card p {
-  color: var(--text-muted);
-  max-width: 34ch;
-}
-
 .journal-media-card:hover {
-  transform: translateY(-2px);
   border-color: rgba(125, 224, 206, 0.4);
   background: var(--surface-card-hover);
 }
 
 .journal-media-card:hover .journal-media-card__asset {
-  transform: scale(1.02);
-}
-
-.journal-media-card--lead strong {
-  font-size: clamp(1.35rem, 2.1vw, 1.85rem);
+  transform: scale(1.01);
 }
 
 .journal-media-card--landscape .journal-media-card__frame {
@@ -632,10 +539,6 @@
 
 .journal-media-card--square .journal-media-card__frame {
   aspect-ratio: 1;
-}
-
-.journal-media-card--lead .journal-media-card__frame {
-  aspect-ratio: 16 / 10;
 }
 
 .roadbook-page {
@@ -988,26 +891,12 @@
     column-gap: var(--space-lg);
   }
 
-  .journal-media-page__stats {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .journal-media-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .journal-media-stage {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .journal-media-card--lead,
-  .journal-media-rail,
   .journal-media-card--landscape {
     grid-column: span 2;
-  }
-
-  .journal-media-rail {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
 }
@@ -1109,48 +998,12 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .journal-media-page__stats {
+  .journal-media-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .journal-media-stage {
-    grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
-    align-items: stretch;
-  }
-
-  .journal-media-stage .journal-media-card--lead {
-    grid-column: auto;
-  }
-
-  .journal-media-rail {
-    grid-column: auto;
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: repeat(2, minmax(0, 1fr));
-    align-content: start;
-  }
-
-  .journal-media-grid {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-  }
-
-  .journal-media-card {
-    height: 100%;
-  }
-
-  .journal-media-card--lead {
-    grid-column: span 7;
-  }
-
-  .journal-media-grid .journal-media-card--landscape {
-    grid-column: span 7;
-  }
-
-  .journal-media-grid .journal-media-card--portrait {
-    grid-column: span 5;
-  }
-
-  .journal-media-grid .journal-media-card--square {
-    grid-column: span 5;
+  .journal-media-card--landscape {
+    grid-column: span 2;
   }
 
 }
