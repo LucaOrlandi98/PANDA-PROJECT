@@ -38,7 +38,7 @@ function JournalMediaCard({
             controls
             playsInline
             poster={item.poster}
-            preload="metadata"
+            preload={priority ? "auto" : "metadata"}
           >
             <source src={item.src} />
           </video>
