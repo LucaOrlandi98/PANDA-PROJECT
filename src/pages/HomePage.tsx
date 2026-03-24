@@ -9,7 +9,7 @@ export function HomePage() {
       <MobileHero
         className="hero-card--home"
         eyebrow="Panda Project"
-        title="Questa e PandAnna"
+        title="Panda Anna"
         image={asset("assets/images/panda-hero-snow.jpg")}
         modelSrc="https://dl.dropboxusercontent.com/scl/fi/lzrhfrj36kyjmq6166g4x/PANDA-3D.glb?rlkey=11rwtnihpn3ry6x4hjzo3injv"
       />
