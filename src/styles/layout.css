@@ -62,23 +62,45 @@
 
 @media (max-width: 719px) {
   .page-shell--home {
-    min-height: 100dvh;
+    height: 100dvh;
+    padding-bottom: 0.9rem;
+    overflow: hidden;
   }
 
   .page-shell--home .page-stack--home {
-    gap: 1rem;
-    min-height: calc(
-      100dvh - var(--nav-offset-top) - var(--nav-height) - var(--page-offset-from-nav-mobile) - var(--space-shell-bottom)
+    height: calc(
+      100dvh - var(--nav-offset-top) - var(--nav-height) - var(--page-offset-from-nav-mobile) - 0.9rem
     );
-    align-content: start;
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 0.8rem;
   }
 
   .page-shell--home .page-section--home-links {
-    margin-top: -0.2rem;
+    min-height: 0;
+    margin-top: -0.15rem;
+    align-self: end;
   }
 
   .page-shell--home .home-links-grid {
-    gap: 0.7rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.55rem;
+    align-items: stretch;
+  }
+
+  .page-shell--home .home-links-grid > * {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .page-shell--home .hero-card--home {
+    height: 100%;
+    min-height: 0;
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+
+  .page-shell--home .hero-card--home .hero-media {
+    height: 100%;
+    min-height: 0;
   }
 }
 
