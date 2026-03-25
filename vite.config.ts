@@ -1,9 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-const repoBase = "/PANDA-PROJECT/";
-
 export default defineConfig(({ mode }) => ({
-  base: mode === "production" ? repoBase : "/",
+  base: mode === "production" ? "./" : "/",
   plugins: [react()],
 }));
