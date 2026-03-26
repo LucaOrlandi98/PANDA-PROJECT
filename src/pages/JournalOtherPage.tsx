@@ -60,9 +60,9 @@ export function JournalOtherPage() {
 
         <div className="journal-resource-list">
           <div className="journal-other-stack journal-other-stack--equipment">
-            {journalOtherEquipmentGroups.map((group, index) => (
+            {journalOtherEquipmentGroups.map((group) => (
               <article className="journal-other-group" key={group.title}>
-                <details className="journal-other-disclosure" open={index === 0}>
+                <details className="journal-other-disclosure">
                   <summary className="journal-other-disclosure__summary">
                     <span className="journal-other-disclosure__title">{group.title}</span>
                     <span
