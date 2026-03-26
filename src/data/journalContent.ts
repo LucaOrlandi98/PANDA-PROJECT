@@ -26,17 +26,12 @@ export const journalSections = [
 
 export const journalOtherEquipmentGroups: JournalReferenceGroup[] = [
   {
-    title: "Illuminazione supplementare",
+    title: "Allestimento",
     links: [
       {
         href: "https://www.rigidon.com/",
         label: "Rigidon",
       },
-    ],
-  },
-  {
-    title: "Allestimento",
-    links: [
       {
         href: "https://www.vevor.it/pages/contact-us",
         label: "Vevor",
@@ -163,6 +158,6 @@ export const journalOtherPlaceholder = {
   ],
   eyebrow: "Placeholder temporaneo",
   note:
-    "Per ora questa sezione resta aperta come spazio per documenti e logistica. E il posto piu sensato da tenere in attesa finche non definisci la terza area definitiva.",
+    "Per ora questa sezione resta aperta come spazio per documenti e logistica.",
   title: "Documenti e logistica",
 } as const;

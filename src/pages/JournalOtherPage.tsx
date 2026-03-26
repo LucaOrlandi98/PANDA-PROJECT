@@ -103,6 +103,41 @@ export function JournalOtherPage() {
                           </p>
                         ))}
                       </div>
+                    ) : group.title === "Allestimento" && group.links?.length ? (
+                      <>
+                        {group.note ? <p>{group.note}</p> : null}
+                        <div className="journal-inline-linkstack">
+                          {group.links.map((item) => (
+                            <p className="journal-inline-linkline" key={item.label}>
+                              {item.href ? (
+                                <a href={item.href} rel="noreferrer" target="_blank">
+                                  {"\u2192"} {item.label}
+                                </a>
+                              ) : (
+                                <span className="journal-placeholder-link">
+                                  {"\u2192"} {item.label}
+                                </span>
+                              )}
+                            </p>
+                          ))}
+                        </div>
+                        {group.bullets?.length ? (
+                          <ul>
+                            {group.bullets.map((item) => (
+                              <li key={item.label}>
+                                {item.href ? (
+                                  <a href={item.href} rel="noreferrer" target="_blank">
+                                    {item.label}
+                                  </a>
+                                ) : (
+                                  <span className="journal-placeholder-link">{item.label}</span>
+                                )}
+                                {item.note ? <span>{item.note}</span> : null}
+                              </li>
+                            ))}
+                          </ul>
+                        ) : null}
+                      </>
                     ) : (
                       <>
                         {group.note ? <p>{group.note}</p> : null}

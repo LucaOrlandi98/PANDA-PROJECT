@@ -136,9 +136,15 @@
 }
 
 .button-secondary {
-  background: transparent;
+  background: rgba(219, 165, 106, 0.08);
   color: var(--text);
-  border-color: var(--line-strong);
+  border-color: rgba(219, 165, 106, 0.26);
+}
+
+.button-secondary:hover {
+  border-color: var(--accent-warm);
+  background: rgba(219, 165, 106, 0.16);
+  color: var(--text);
 }
 
 .button-small {
@@ -194,18 +200,58 @@
 }
 
 .feature-card:hover h3 {
-  color: var(--accent);
+  color: var(--accent-warm);
+}
+
+.spec-card {
+  position: relative;
+  overflow: hidden;
+  gap: 0.75rem;
+  min-height: 100%;
+  padding: var(--panel-padding-block) var(--panel-padding-inline);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(180deg, rgba(219, 165, 106, 0.08), rgba(255, 255, 255, 0.015) 26%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.012));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.spec-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-warm), rgba(219, 165, 106, 0.08));
+  pointer-events: none;
+}
+
+.spec-card .spec-label {
+  color: var(--accent-warm);
+}
+
+.spec-card h3 {
+  font-size: clamp(1.2rem, 2.4vw, 1.6rem);
+  line-height: 1.04;
+}
+
+.spec-card p:last-child {
+  max-width: 36rem;
 }
 
 .action-card {
+  position: relative;
+  overflow: hidden;
   gap: 0.9rem;
   min-height: 180px;
   padding: var(--panel-padding-block) var(--panel-padding-inline);
-  border: 1px solid var(--line);
-  border-top: 0;
-  background: var(--surface-card);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(180deg, rgba(219, 165, 106, 0.08), rgba(255, 255, 255, 0.015) 26%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.012));
   transform: translateY(0);
-  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 0 0 rgba(0, 0, 0, 0);
   transition:
     border-color var(--transition-fast),
     background-color var(--transition-fast),
@@ -214,11 +260,22 @@
     box-shadow var(--transition-fast);
 }
 
+.action-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-warm), rgba(219, 165, 106, 0.08));
+  pointer-events: none;
+}
+
 .action-card:hover {
-  border-color: rgba(125, 224, 206, 0.4);
-  background: var(--surface-card-hover);
+  border-color: rgba(219, 165, 106, 0.4);
+  background:
+    linear-gradient(180deg, rgba(219, 165, 106, 0.1), rgba(255, 255, 255, 0.02) 30%),
+    rgba(255, 255, 255, 0.04);
   transform: translateY(-4px);
-  box-shadow: 0 18px 30px rgba(0, 0, 0, 0.14);
+  box-shadow: 0 18px 30px rgba(0, 0, 0, 0.18);
 }
 
 .feature-card--compact {
@@ -244,10 +301,27 @@
 }
 
 .map-frame {
+  position: relative;
   min-height: clamp(18rem, 52vh, 24rem);
   overflow: hidden;
-  border: 1px solid var(--line);
-  background: var(--bg-deep);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(180deg, rgba(219, 165, 106, 0.06), rgba(36, 35, 34, 0.9) 18%),
+    var(--bg-deep);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 18px 30px rgba(0, 0, 0, 0.14);
+}
+
+.map-frame::before,
+.live-map-page__frame::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 2;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-warm), rgba(219, 165, 106, 0.08));
+  pointer-events: none;
 }
 
 .map-frame iframe {
@@ -264,8 +338,13 @@
   height: clamp(18rem, 52vh, 24rem);
   min-height: clamp(18rem, 52vh, 24rem);
   overflow: hidden;
-  border: 1px solid var(--line);
-  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(180deg, rgba(219, 165, 106, 0.06), rgba(36, 35, 34, 0.9) 18%),
+    transparent;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 18px 30px rgba(0, 0, 0, 0.14);
 }
 
 .live-map-page__fallback {
@@ -431,6 +510,7 @@
   color: var(--text);
   font-family: var(--font-display);
   font-size: 0.72rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .timeline-item.is-active .timeline-marker {
@@ -488,7 +568,7 @@
 }
 
 .journal-hub-card__footer span:first-child {
-  color: var(--text-muted);
+  color: var(--accent-warm);
   font-family: var(--font-display);
   font-size: 0.74rem;
   letter-spacing: 0.12em;
@@ -501,15 +581,17 @@
   place-items: center;
   width: 2rem;
   height: 2rem;
-  border: 1px solid var(--line-strong);
-  color: var(--text);
+  border: 1px solid rgba(219, 165, 106, 0.26);
+  color: var(--accent-warm);
   font-family: var(--font-display);
   font-size: 1rem;
   line-height: 1;
+  background: rgba(219, 165, 106, 0.08);
   transition:
     border-color var(--transition-base),
     color var(--transition-base),
-    transform var(--transition-base);
+    transform var(--transition-base),
+    background-color var(--transition-base);
 }
 
 .journal-hub-card__arrow svg {
@@ -518,8 +600,9 @@
 }
 
 .journal-hub-card:hover .journal-hub-card__arrow {
-  border-color: var(--accent);
-  color: var(--accent);
+  border-color: var(--accent-warm);
+  color: var(--accent-warm);
+  background: rgba(219, 165, 106, 0.15);
   transform: translate(1px, -1px);
 }
 
@@ -667,8 +750,10 @@
   display: grid;
   gap: var(--space-md);
   padding: var(--panel-padding-block) var(--panel-padding-inline);
-  border: 1px solid var(--line);
-  background: var(--surface-card);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(180deg, rgba(219, 165, 106, 0.08), rgba(255, 255, 255, 0.015) 26%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.012));
 }
 
 .journal-detail-card h2 {
@@ -681,8 +766,8 @@
   min-height: 2rem;
   align-items: center;
   padding: 0.35rem 0.7rem;
-  border: 1px solid var(--line-strong);
-  color: var(--accent);
+  border: 1px solid rgba(219, 165, 106, 0.26);
+  color: var(--accent-warm);
   font-family: var(--font-display);
   font-size: 0.72rem;
   font-weight: 700;
@@ -918,6 +1003,10 @@
 .journal-other-stack--mechanical .journal-checklist li::before {
   content: "\2713";
   color: var(--accent-warm);
+}
+
+.journal-checklist li::before {
+  content: "\2713";
 }
 
 .journal-media-section {
@@ -1182,13 +1271,27 @@
   display: grid;
   gap: 0.5rem;
   padding: var(--panel-padding-block) var(--panel-padding-inline);
-  border: 1px solid var(--line);
-  background: var(--surface-card);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(180deg, rgba(219, 165, 106, 0.08), rgba(255, 255, 255, 0.015) 26%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.012));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
   min-width: 0;
 }
 
+.roadbook-stat::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-warm), rgba(219, 165, 106, 0.08));
+  pointer-events: none;
+}
+
 .roadbook-stat p {
-  color: var(--accent);
+  color: var(--accent-warm);
   font-family: var(--font-display);
   font-size: 0.74rem;
   font-weight: 700;
@@ -1218,6 +1321,14 @@
   text-align: center;
 }
 
+.app-route-loader {
+  gap: var(--space-lg);
+}
+
+.app-route-loader .coming-soon__pulse {
+  width: min(7rem, 28vw);
+}
+
 .coming-soon {
   min-height: inherit;
   place-items: center;
@@ -1225,6 +1336,20 @@
   justify-items: center;
   text-align: center;
   gap: var(--space-lg);
+}
+
+.app-route-fallback {
+  gap: var(--space-lg);
+  max-width: 42rem;
+  margin-inline: auto;
+}
+
+.app-route-fallback__text {
+  max-width: 34rem;
+}
+
+.app-route-fallback__actions {
+  justify-content: center;
 }
 
 .coming-soon__pulse {

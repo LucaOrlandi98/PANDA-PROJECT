@@ -38,9 +38,10 @@ export function MobileHero({
 
     const model = modelRef.current;
     const handleReady = () => setIsLoaded(true);
+    const handleError = () => setIsLoaded(true);
 
     model.addEventListener("load", handleReady);
-    model.addEventListener("error", handleReady);
+    model.addEventListener("error", handleError);
 
     const timer = window.setTimeout(() => {
       setIsLoaded(true);
@@ -48,7 +49,7 @@ export function MobileHero({
 
     return () => {
       model.removeEventListener("load", handleReady);
-      model.removeEventListener("error", handleReady);
+      model.removeEventListener("error", handleError);
       window.clearTimeout(timer);
     };
   }, [modelSrc]);

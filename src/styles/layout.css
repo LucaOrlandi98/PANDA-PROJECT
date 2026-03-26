@@ -123,17 +123,8 @@
 
 .card-grid {
   display: grid;
-  gap: 0;
+  gap: var(--space-md);
   align-items: start;
-}
-
-.card-grid > :first-child {
-  border-top: 0;
-  padding-top: 0;
-}
-
-.card-grid > :last-child {
-  padding-bottom: 0;
 }
 
 .home-links-grid {
@@ -209,11 +200,6 @@
   .card-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     column-gap: 2.25rem;
-  }
-
-  .card-grid > :nth-child(2) {
-    border-top: 0;
-    padding-top: 0;
   }
 }
 
