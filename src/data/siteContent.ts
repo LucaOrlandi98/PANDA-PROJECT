@@ -100,14 +100,14 @@ export const timeline: TimelineItem[] = [
     title: "Test / messa a punto",
     description:
       "Mettere alla prova veicolo e assetto in condizioni reali e sistemare le criticita rimaste aperte.",
-    status: "active",
+    status: "done",
   },
   {
     phase: "07",
     title: "Partenza",
     description:
       "Avviare il viaggio con un primo obiettivo geografico chiaro e capire fin dove si riuscira ad arrivare.",
-    status: "next",
+    status: "active",
   },
 ];
 

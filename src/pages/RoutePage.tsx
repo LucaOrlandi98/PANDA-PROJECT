@@ -25,7 +25,7 @@ const roadbookStats = [
   },
   {
     label: "Fase",
-    value: "Preparazione",
+    value: "Georgia raggiunta il 6/06/26",
   },
 ] as const;
 
