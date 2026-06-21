@@ -13,19 +13,19 @@ const LiveMapCanvas = lazy(loadLiveMapCanvas);
 const roadbookStats = [
   {
     label: "Direzione",
-    value: "Georgia",
+    value: "Tagikistan",
   },
   {
     label: "Km stimati",
-    value: "11.000 km",
+    value: "25.000 km",
   },
   {
     label: "Durata stimata",
-    value: "2 / 3 mesi",
+    value: "3/4 mesi",
   },
   {
     label: "Fase",
-    value: "Georgia raggiunta il 6/06/26",
+    value: "preparazione prossima tappa",
   },
 ] as const;
 
