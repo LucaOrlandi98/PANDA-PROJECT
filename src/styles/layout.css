@@ -142,7 +142,8 @@
   .page-shell--home {
     height: 100dvh;
     padding-bottom: 0.9rem;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
   .page-shell--home .page-stack--home {
@@ -173,20 +174,21 @@
   }
 
   .page-shell--home .hero-card--home {
-    height: 100%;
+    height: auto;
     min-height: 0;
-    grid-template-rows: auto minmax(0, 1fr);
-    align-content: stretch;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    align-content: start;
   }
 
   .page-shell--home .hero-card--home .hero-media {
-    height: 100%;
+    height: auto;
     min-height: 0;
   }
 
   .page-shell--home .hero-card--home .hero-content {
     order: -1;
   }
+
 }
 
 @media (min-width: 720px) {
@@ -223,7 +225,8 @@
       calc(var(--nav-offset-top) + var(--nav-height) + 1rem)
       0
       1rem;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
   .page-shell--home .page-stack--home {

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 type HeroProps = {
@@ -16,6 +16,7 @@ type HeroProps = {
     label: string;
     to: string;
   };
+  aside?: ReactNode;
 };
 
 export function MobileHero({
@@ -27,6 +28,7 @@ export function MobileHero({
   modelSrc,
   primaryCta,
   secondaryCta,
+  aside,
 }: HeroProps) {
   const modelRef = useRef<HTMLElement | null>(null);
   const [isLoaded, setIsLoaded] = useState(!modelSrc);
@@ -108,6 +110,7 @@ export function MobileHero({
           </div>
         ) : null}
       </div>
+      {aside ? <div className="hero-aside">{aside}</div> : null}
     </section>
   );
 }

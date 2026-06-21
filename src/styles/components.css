@@ -64,6 +64,10 @@
   justify-items: start;
 }
 
+.hero-aside {
+  min-width: 0;
+}
+
 .hero-content h1 {
   max-width: 11ch;
 }
@@ -1438,6 +1442,18 @@
   border-top: 2px solid var(--accent);
 }
 
+.home-support-widget {
+  width: 100%;
+  max-width: 420px;
+}
+
+.gofundme-widget-frame {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: #fff;
+}
+
 @media (max-width: 719px) {
   .hero-media {
     min-height: 16rem;
@@ -1488,6 +1504,10 @@
     white-space: nowrap;
   }
 
+  .hero-card--home .hero-aside {
+    width: 100%;
+  }
+
   .button-row {
     display: grid;
     grid-template-columns: 1fr;
@@ -1496,6 +1516,11 @@
 
   .button-row > * {
     width: 100%;
+  }
+
+  .home-support-widget {
+    width: 100%;
+    max-width: none;
   }
 
   .timeline {
@@ -1675,6 +1700,12 @@
     max-width: 30rem;
   }
 
+  .hero-card--home .hero-aside {
+    grid-column: 1 / -1;
+    width: 100%;
+    max-width: 420px;
+  }
+
   .roadbook-page__metrics {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1738,20 +1769,24 @@
   }
 
   .hero-card--home {
-    grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
-    gap: clamp(1.5rem, 2.5vw, 3rem);
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
+    grid-template-areas:
+      "media aside"
+      "content aside";
+    gap: clamp(1.25rem, 2vw, 2.2rem);
     min-height: 0;
-    height: 100%;
-    align-items: center;
+    height: auto;
+    align-items: start;
   }
 
   .hero-card--home .hero-media {
+    grid-area: media;
     min-height: 0;
-    height: 100%;
+    height: clamp(22rem, 58vh, 34rem);
   }
 
   .hero-card--home .hero-media.is-model {
-    min-height: 0;
+    min-height: clamp(22rem, 58vh, 34rem);
   }
 
   .hero-card--home .hero-model model-viewer {
@@ -1760,16 +1795,24 @@
   }
 
   .hero-card--home .hero-content {
+    grid-area: content;
     padding-top: 0;
     transform: none;
-    align-content: center;
-    align-self: center;
+    align-content: start;
+    align-self: start;
     min-height: 0;
   }
 
   .hero-card--home .hero-content h1 {
-    max-width: 7ch;
-    font-size: clamp(3.1rem, 5vw, 5.4rem);
+    max-width: 9ch;
+    font-size: clamp(2.8rem, 4.1vw, 4.2rem);
+  }
+
+  .hero-card--home .hero-aside {
+    grid-area: aside;
+    grid-column: auto;
+    max-width: none;
+    align-self: start;
   }
 
   .page-shell--home .home-links-grid {

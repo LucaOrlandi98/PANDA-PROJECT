@@ -1,4 +1,5 @@
 import { FeatureCard } from "../components/FeatureCard";
+import { GoFundMeWidget } from "../components/GoFundMeWidget";
 import { MobileHero } from "../components/MobileHero";
 import { hubCards } from "../data/siteContent";
 import { asset } from "../lib/asset";
@@ -7,6 +8,11 @@ export function HomePage() {
   return (
     <div className="page-stack page-stack--home">
       <MobileHero
+        aside={
+          <div className="home-support-widget">
+            <GoFundMeWidget />
+          </div>
+        }
         className="hero-card--home"
         eyebrow="Panda Project"
         title="Panda Anna"
