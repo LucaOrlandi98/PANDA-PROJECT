@@ -1771,8 +1771,8 @@
   .hero-card--home {
     grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
     grid-template-areas:
-      "media aside"
-      "content aside";
+      "content aside"
+      "media aside";
     gap: clamp(1.25rem, 2vw, 2.2rem);
     min-height: 0;
     height: auto;
