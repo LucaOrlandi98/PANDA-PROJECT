@@ -107,7 +107,42 @@ export const timeline: TimelineItem[] = [
     title: "Partenza",
     description:
       "Avviare il viaggio con un primo obiettivo geografico chiaro e capire fin dove si riuscira ad arrivare.",
+    status: "done",
+  },
+  {
+    phase: "08",
+    title: "Georgia raggiunta",
+    description:
+      "Ingresso in Georgia completato il 06/06/2026, primo traguardo reale del viaggio raggiunto.",
+    status: "done",
+  },
+  {
+    phase: "09",
+    title: "Direzione Tajikistan",
+    description:
+      "Pianificare il raggiungimento del Tajikistan come obiettivo geografico corrente del progetto.",
     status: "active",
+  },
+  {
+    phase: "10",
+    title: "Russia",
+    description:
+      "Preparare visti, documentazione e strategia per l'attraversata della Russia.",
+    status: "next",
+  },
+  {
+    phase: "11",
+    title: "Attraversata Kazakistan",
+    description:
+      "Definire percorso, tempi e soste per la pianificazione dell'attraversata del Kazakistan.",
+    status: "next",
+  },
+  {
+    phase: "12",
+    title: "Supporto documentario",
+    description:
+      "Preparare la logistica e il supporto operativo necessari alla produzione del documentario.",
+    status: "next",
   },
 ];
 

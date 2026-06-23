@@ -1,4 +1,4 @@
-import type { JournalReferenceGroup } from "../types/content";
+import type { JournalLogEntry, JournalReferenceGroup } from "../types/content";
 import { journalMediaArchive } from "./journalMediaArchive";
 
 export const journalGallery = journalMediaArchive;
@@ -12,7 +12,7 @@ export const journalSections = [
   },
   {
     label: "02",
-    meta: "coming soon",
+    meta: "2 articoli",
     title: "Diario di bordo",
     to: "/journal/diario",
   },
@@ -23,6 +23,54 @@ export const journalSections = [
     to: "/journal/altro",
   },
 ] as const;
+
+export const journalLogEntries: JournalLogEntry[] = [
+  {
+    label: "01",
+    title: "Da Brescia alla Turchia",
+    meta: "4 maggio 2026 - Partenza da Brescia, Grecia, primo ingresso in Turchia",
+    paragraphs: [
+      "Dopo mesi passati in garage a preparare la Panda e immaginare questo momento, il 4 maggio 2026 e finalmente arrivato il giorno della partenza da Brescia. La destinazione finale era la Georgia, ma in realta non avevo idea di cosa mi aspettasse. Sapevo solo che era arrivato il momento di partire.",
+      "La prima tappa e stata Genova. Prima ancora di iniziare davvero il viaggio sono passato a salutare un amico che mi aveva dato una mano con alcune modifiche alla Panda, tra cui le molle di carico che avrebbero dovuto sopportare tutto il peso dell'attrezzatura. Un ultimo caffe, qualche chiacchiera e di nuovo in strada.",
+      "Da li ho proseguito verso Roma. Ne ho approfittato per salutare altri amici e recuperare le ultime cose che ancora mancavano. Piccoli dettagli che fino all'ultimo sembravano indispensabili e che, come avrei scoperto piu avanti, spesso si sarebbero rivelati molto meno importanti del previsto.",
+      "La prima vera notte di viaggio l'ho passata a Caserta. Il mattino seguente ho percorso gli ultimi chilometri verso il porto e, la sera, mi sono imbarcato sul traghetto diretto in Grecia. Vedere la Panda scomparire nella stiva e ritrovarmi sul ponte, circondato soltanto dal mare, e stato uno di quei momenti in cui realizzi che ormai non si torna piu indietro. Il viaggio era davvero iniziato.",
+      "Lo sbarco a Igoumenitsa e stato quasi surreale. La prima notte in Grecia l'ho passata in un piccolo appartamento poco distante dal porto. Una pausa breve, giusto il tempo di riposare e ripartire.",
+      "Da quel momento sono iniziati tre giorni che ricordo ancora come una piccola maratona. Ho deciso di attraversare la Grecia passando per le montagne, in direzione di Larissa e poi verso est. Il meteo non era dalla mia parte. Pioggia, freddo e strade molto piu lente del previsto hanno trasformato quei giorni in una continua sequenza di ore al volante. A volte mi sembrava di non avanzare mai.",
+      "Nonostante tutto, i paesaggi erano incredibili. Montagne, villaggi sperduti e pochissimo traffico. Era la prima volta che iniziavo davvero a capire cosa significasse vivere in viaggio. Non esistevano piu orari, programmi rigidi o giornate prestabilite. C'era soltanto una direzione da seguire.",
+      "Quando sono arrivato ad Alessandropoli ho deciso di fermarmi per un paio di giorni. Era la prima vera pausa dall'inizio della partenza. Avevo bisogno di rallentare, tirare il fiato e prendere confidenza con quella nuova routine fatta di chilometri, mappe e notti improvvisate.",
+      "Dopo qualche giorno e arrivato il momento di ripartire. Davanti a me c'era il confine con la Turchia.",
+      "Era la seconda volta che mettevo piede in questo paese, ma questa volta aveva tutto un altro sapore. Ho scelto di evitare Istanbul e dirigermi subito verso l'interno, senza sapere che i giorni successivi mi avrebbero portato nel cuore dell'Anatolia e che il viaggio, da li in avanti, sarebbe diventato qualcosa di completamente diverso da quello che avevo immaginato.",
+    ],
+  },
+  {
+    label: "02",
+    title: "La Turchia e il momento in cui ho smesso di correre",
+    meta: "Maggio / Giugno 2026 - Lago Salato, Cappadocia, Mar Nero e rotta verso la Georgia",
+    paragraphs: [
+      "Quando sono entrato in Turchia avevo ancora la mentalita dei primi giorni. Ero partito con un obiettivo ben preciso e continuavo a macinare chilometri quasi senza fermarmi. Dormivo dove capitava, senza cercare posti particolari. Volevo solo continuare ad andare avanti.",
+      "Le prime tappe sono state il lago Salato e poi Goreme. La Turchia mi sembrava immensa e avevo quasi la sensazione di dover recuperare tempo. Col senno di poi, forse stavo semplicemente correndo troppo.",
+      "Arrivato al lago Salato mi sono trovato davanti alla prima vera delusione del viaggio. Pioggia, vento fortissimo e un tempo terribile. Le raffiche superavano i sessanta chilometri orari e il paesaggio che avevo immaginato era completamente diverso da quello che mi trovavo davanti.",
+      "Proprio quella sera pero e successo qualcosa che avrebbe dato il tono a tutto il resto del viaggio.",
+      "Ho incontrato alcuni ragazzi che stavano viaggiando verso l'Australia con un vecchio van. Mi hanno visto da solo e mi hanno invitato a passare la serata con loro. Hanno cucinato anche per me e mi hanno ospitato nel loro mezzo mentre fuori il vento continuava a scuotere tutto.",
+      "Ripensandoci, forse e stata proprio quella che sembrava una delusione a regalarmi uno dei primi momenti piu belli.",
+      "Nei giorni successivi ho raggiunto velocemente Goreme. Avevo sempre sognato di vedere la Cappadocia e le sue mongolfiere, ma anche li il tempo sembrava essersi messo contro di noi. Pioggia quasi continua e pochissimi voli.",
+      "Proprio a Goreme ho conosciuto una ragazza tedesca. Doveva essere un incontro come tanti, ma alla fine abbiamo trascorso insieme circa due settimane di viaggio.",
+      "I primi giorni siamo rimasti in Cappadocia sperando ogni mattina di vedere le mongolfiere alzarsi in volo, ma il cielo continuava a regalarci soltanto nuvole e pioggia. Cosi abbiamo deciso di cambiare programma e dirigerci verso il Mar Nero.",
+      "Per cinque giorni abbiamo viaggiato senza una meta precisa, attraversando villaggi, spiagge deserte e strade secondarie. Poi le nostre strade si sono separate e io ho continuato da solo.",
+      "Sono andato verso il Dark Canyon, uno dei luoghi piu incredibili che abbia visto fino a quel momento. Da li ho proseguito fino al monte Nemrut e poi verso Gaziantep, arrivando quasi al confine con la Siria.",
+      "Piu passavano i giorni e piu mi rendevo conto che la meta contava sempre meno. Erano i momenti nel mezzo a rendere speciale tutto questo.",
+      "Qualche tempo dopo sono tornato a Goreme e li ci siamo ritrovati di nuovo. Quasi per caso.",
+      "Questa volta il tempo era cambiato.",
+      "Per cinque giorni abbiamo assistito ogni mattina allo spettacolo delle mongolfiere che si alzavano sopra la valle. Mi svegliavo prima dell'alba, prendevo un caffe e guardavo il cielo riempirsi lentamente di colori. Erano momenti semplici, ma avevano qualcosa di magico.",
+      "E stato proprio li che ho capito una cosa.",
+      "Ero partito pensando che il viaggio fosse una corsa. Un susseguirsi di luoghi da raggiungere e chilometri da percorrere.",
+      "In realta il viaggio era tutto il contrario.",
+      "Erano le persone incontrate per caso, le cene condivise, i programmi cambiati all'ultimo momento, le mattine passate senza fretta e quei momenti che nessuna pianificazione avrebbe mai potuto prevedere.",
+      "Quando ho lasciato Goreme e ho puntato la Panda verso la Georgia, il 6 giugno, non ero piu lo stesso ragazzo che era entrato in Turchia poche settimane prima.",
+      "E senza saperlo, il viaggio stava per cambiare ancora una volta.",
+    ],
+  },
+];
 
 export const journalOtherEquipmentGroups: JournalReferenceGroup[] = [
   {

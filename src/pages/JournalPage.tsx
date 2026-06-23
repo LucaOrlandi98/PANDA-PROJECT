@@ -9,7 +9,7 @@ export function JournalPage() {
         <h1>Journal</h1>
         <p className="journal-page__lead">
           Tre aree chiare per dare al progetto un archivio leggibile: galleria foto + video,
-          diario di bordo in arrivo e attrezzatura gia ordinata.
+          diario di bordo ora attivo e attrezzatura gia ordinata.
         </p>
       </section>
 

@@ -5,15 +5,19 @@ import { VehicleSpecCard } from "../components/VehicleSpecCard";
 import { pandaSpecs, timeline } from "../data/siteContent";
 
 export function PandaPage() {
+  const visibleSpecs = pandaSpecs.filter(
+    (item) => item.label !== "Stato" && item.label !== "Direzione",
+  );
+
   return (
     <div className="page-stack">
       <section className="page-section">
         <SectionIntro
           kicker="Scheda rapida"
-          title="Quattro coordinate utili"
+          title="Coordinate utili"
         />
         <div className="card-grid">
-          {pandaSpecs.map((item) => (
+          {visibleSpecs.map((item) => (
             <VehicleSpecCard key={item.label} {...item} />
           ))}
         </div>
@@ -21,9 +25,8 @@ export function PandaPage() {
 
       <section className="page-section">
         <SectionIntro
-          kicker="Timeline"
-          title="Dall'idea alla strada"
-          text="Last Update 20/03/2026."
+          title="Timeline progetto"
+          text="Last Update 23/06/2026."
         />
         <TimelineVertical items={timeline} />
       </section>

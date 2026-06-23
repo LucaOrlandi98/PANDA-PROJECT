@@ -1,5 +1,5 @@
 type SectionIntroProps = {
-  kicker: string;
+  kicker?: string;
   title: string;
   text?: string;
 };
@@ -7,7 +7,7 @@ type SectionIntroProps = {
 export function SectionIntro({ kicker, title, text }: SectionIntroProps) {
   return (
     <header className="section-intro">
-      <p className="eyebrow">{kicker}</p>
+      {kicker ? <p className="eyebrow">{kicker}</p> : null}
       <h2>{title}</h2>
       {text ? <p>{text}</p> : null}
     </header>

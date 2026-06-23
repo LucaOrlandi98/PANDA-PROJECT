@@ -52,3 +52,10 @@ export type JournalReferenceGroup = {
   links?: JournalReferenceLink[];
   status?: "coming-soon";
 };
+
+export type JournalLogEntry = {
+  label: string;
+  title: string;
+  meta: string;
+  paragraphs: string[];
+};
