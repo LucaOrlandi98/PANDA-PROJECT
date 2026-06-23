@@ -28,7 +28,7 @@ export const journalLogEntries: JournalLogEntry[] = [
   {
     label: "01",
     title: "Da Brescia alla Turchia",
-    meta: "4 maggio 2026 - Partenza da Brescia, Grecia, primo ingresso in Turchia",
+    meta: "Data di pubblicazione: 19/5/2025",
     paragraphs: [
       "Dopo mesi passati in garage a preparare la Panda e immaginare questo momento, il 4 maggio 2026 e finalmente arrivato il giorno della partenza da Brescia. La destinazione finale era la Georgia, ma in realta non avevo idea di cosa mi aspettasse. Sapevo solo che era arrivato il momento di partire.",
       "La prima tappa e stata Genova. Prima ancora di iniziare davvero il viaggio sono passato a salutare un amico che mi aveva dato una mano con alcune modifiche alla Panda, tra cui le molle di carico che avrebbero dovuto sopportare tutto il peso dell'attrezzatura. Un ultimo caffe, qualche chiacchiera e di nuovo in strada.",
@@ -45,7 +45,7 @@ export const journalLogEntries: JournalLogEntry[] = [
   {
     label: "02",
     title: "La Turchia e il momento in cui ho smesso di correre",
-    meta: "Maggio / Giugno 2026 - Lago Salato, Cappadocia, Mar Nero e rotta verso la Georgia",
+    meta: "Data di pubblicazione: 10/6/26",
     paragraphs: [
       "Quando sono entrato in Turchia avevo ancora la mentalita dei primi giorni. Ero partito con un obiettivo ben preciso e continuavo a macinare chilometri quasi senza fermarmi. Dormivo dove capitava, senza cercare posti particolari. Volevo solo continuare ad andare avanti.",
       "Le prime tappe sono state il lago Salato e poi Goreme. La Turchia mi sembrava immensa e avevo quasi la sensazione di dover recuperare tempo. Col senno di poi, forse stavo semplicemente correndo troppo.",
