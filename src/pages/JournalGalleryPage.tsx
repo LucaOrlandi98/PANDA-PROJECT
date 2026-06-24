@@ -23,11 +23,14 @@ const mediaAspectValues = {
   portrait: 4 / 5,
   square: 1,
 } as const;
+const galleryVideoPreviewDurationMs = 2200;
 
 type LightboxState = {
   section: JournalMediaCategory;
   index: number;
 };
+
+const galleryImageSizes = "(max-width: 719px) 45vw, (max-width: 1023px) 30vw, 240px";
 
 type LightboxCarouselProps = {
   items: readonly JournalMediaItem[];
@@ -35,6 +38,113 @@ type LightboxCarouselProps = {
   onChange: (index: number) => void;
   videoRefs: MutableRefObject<(HTMLVideoElement | null)[]>;
 };
+
+type GalleryVideoPreviewProps = {
+  item: JournalMediaItem;
+};
+
+function GalleryVideoPreview({ item }: GalleryVideoPreviewProps) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const previewVideoRef = useRef<HTMLVideoElement | null>(null);
+  const previewTimeoutRef = useRef<number | null>(null);
+  const [isReady, setIsReady] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [shouldLoad, setShouldLoad] = useState(false);
+
+  useEffect(() => {
+    const container = containerRef.current;
+
+    if (!container) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+
+        if (entry.isIntersecting) {
+          setShouldLoad(true);
+        }
+      },
+      {
+        rootMargin: "160px 0px",
+        threshold: 0.35,
+      },
+    );
+
+    observer.observe(container);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    const video = previewVideoRef.current;
+
+    if (!video) {
+      return;
+    }
+
+    if (previewTimeoutRef.current !== null) {
+      window.clearTimeout(previewTimeoutRef.current);
+      previewTimeoutRef.current = null;
+    }
+
+    if (!isVisible) {
+      video.pause();
+      video.currentTime = 0;
+      return;
+    }
+
+    if (!shouldLoad || !isReady) {
+      return;
+    }
+
+    video.muted = true;
+    video.currentTime = 0;
+
+    void video.play().then(() => {
+      previewTimeoutRef.current = window.setTimeout(() => {
+        video.pause();
+        previewTimeoutRef.current = null;
+      }, galleryVideoPreviewDurationMs);
+    }).catch(() => {});
+
+    return () => {
+      if (previewTimeoutRef.current !== null) {
+        window.clearTimeout(previewTimeoutRef.current);
+        previewTimeoutRef.current = null;
+      }
+
+      video.pause();
+    };
+  }, [isReady, isVisible, shouldLoad]);
+
+  return (
+    <div
+      aria-hidden="true"
+      className={`journal-media-wall__video-card${isReady ? " is-ready" : ""}`}
+      ref={containerRef}
+      style={{
+        aspectRatio: mediaAspectRatios[item.orientation],
+      }}
+    >
+      <video
+        className="journal-media-wall__video-preview"
+        loop={false}
+        muted
+        onLoadedData={() => setIsReady(true)}
+        playsInline
+        preload={shouldLoad ? "metadata" : "none"}
+        ref={previewVideoRef}
+      >
+        {shouldLoad ? <source src={item.src} /> : null}
+      </video>
+      <span className="journal-media-wall__video-icon">{"\u25B6"}</span>
+    </div>
+  );
+}
 
 function LightboxCarousel({
   items,
@@ -133,8 +243,7 @@ function LightboxCarousel({
                   alt={item.alt}
                   className="journal-carousel__asset"
                   decoding="async"
-                  loading="lazy"
-                  src={item.src}
+                  src={item.lightboxSrc ?? item.src}
                 />
               )}
             </div>
@@ -299,28 +408,24 @@ export function JournalGalleryPage() {
                     aria-label={`Apri ${item.alt} nel popup`}
                     className="journal-media-wall__item"
                     key={item.id}
-                    onClick={() => openLightbox(section.id, index)}
-                    type="button"
-                  >
-                    {item.kind === "video" ? (
-                      <video
-                        autoPlay
-                        aria-label={item.alt}
-                        className="journal-media-wall__asset"
-                        loop
-                        muted
-                        playsInline
-                        preload="metadata"
-                      >
-                        <source src={item.src} />
-                      </video>
+                  onClick={() => openLightbox(section.id, index)}
+                  type="button"
+                >
+                  {item.kind === "video" ? (
+                      <GalleryVideoPreview item={item} />
                     ) : (
                       <img
                         alt={item.alt}
                         className="journal-media-wall__asset"
                         decoding="async"
                         loading="lazy"
-                        src={item.src}
+                        sizes={galleryImageSizes}
+                        src={item.thumbnailSrc ?? item.src}
+                        srcSet={
+                          item.thumbnailSrc && item.lightboxSrc
+                            ? `${item.thumbnailSrc} 720w, ${item.lightboxSrc} 1600w`
+                            : undefined
+                        }
                       />
                     )}
                   </button>

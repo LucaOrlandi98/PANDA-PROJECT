@@ -27,7 +27,7 @@ export type JournalMediaKind = "photo" | "video";
 
 export type JournalMediaOrientation = "landscape" | "portrait" | "square";
 
-export type JournalMediaCategory = "preparazione" | "test" | "viaggio";
+export type JournalMediaCategory = "preparazione" | "grecia-turchia";
 
 export type JournalMediaItem = {
   id: string;
@@ -36,6 +36,8 @@ export type JournalMediaItem = {
   orientation: JournalMediaOrientation;
   category: JournalMediaCategory;
   src: string;
+  thumbnailSrc?: string;
+  lightboxSrc?: string;
 };
 
 export type JournalReferenceLink = {

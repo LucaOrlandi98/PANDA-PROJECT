@@ -1,4 +1,5 @@
-import { asset } from "../lib/asset";
+import { asset, optimizedGalleryImageAssets } from "../lib/asset";
+import { greciaTurchiaMedia } from "./generated/greciaTurchiaMedia";
 import type { JournalMediaCategory, JournalMediaItem } from "../types/content";
 
 export const journalMediaSections = [
@@ -7,48 +8,56 @@ export const journalMediaSections = [
     label: "Preparazione",
   },
   {
-    id: "test",
-    label: "Test",
-  },
-  {
-    id: "viaggio",
-    label: "Viaggio",
+    id: "grecia-turchia",
+    label: "Grecia | Turchia",
   },
 ] as const satisfies readonly { id: JournalMediaCategory; label: string }[];
 
+type JournalPhotoConfig = Omit<JournalMediaItem, "kind" | "src"> & {
+  path: string;
+};
+
+function createJournalPhotoItem(config: JournalPhotoConfig): JournalMediaItem {
+  const optimizedAssets = optimizedGalleryImageAssets(config.path);
+
+  return {
+    ...config,
+    kind: "photo",
+    lightboxSrc: optimizedAssets.lightboxSrc,
+    src: optimizedAssets.originalSrc,
+    thumbnailSrc: optimizedAssets.thumbnailSrc,
+  };
+}
+
 const journalPhotoArchive: readonly JournalMediaItem[] = [
-  {
+  createJournalPhotoItem({
     alt: "Dettaglio del ponte e del gruppo ruota",
     category: "preparazione",
     id: "ponte-gruppo-ruota",
-    kind: "photo",
     orientation: "square",
-    src: asset("assets/images/panda-axle.jpg"),
-  },
-  {
+    path: "assets/images/panda-axle.jpg",
+  }),
+  createJournalPhotoItem({
     alt: "Panda Anna vista frontale in garage",
     category: "preparazione",
     id: "pandanna-garage",
-    kind: "photo",
     orientation: "portrait",
-    src: asset("assets/images/panda-front-garage.jpg"),
-  },
-  {
+    path: "assets/images/panda-front-garage.jpg",
+  }),
+  createJournalPhotoItem({
     alt: "Dettaglio del fondo e della ruggine",
     category: "preparazione",
     id: "fondo-ruggine",
-    kind: "photo",
     orientation: "landscape",
-    src: asset("assets/images/panda-rust-floor.jpg"),
-  },
-  {
+    path: "assets/images/panda-rust-floor.jpg",
+  }),
+  createJournalPhotoItem({
     alt: "Sottoscocca della Panda in lavorazione",
     category: "preparazione",
     id: "sottoscocca-panda",
-    kind: "photo",
     orientation: "portrait",
-    src: asset("assets/images/panda-underbody.jpg"),
-  },
+    path: "assets/images/panda-underbody.jpg",
+  }),
 ];
 
 const journalVideoArchiveFiles = [
@@ -91,7 +100,9 @@ const journalVideoArchive: readonly JournalMediaItem[] = Array.from(
 });
 
 export const journalMediaArchive: readonly JournalMediaItem[] = Array.from(
-  new Map([...journalPhotoArchive, ...journalVideoArchive].map((item) => [item.id, item])).values(),
+  new Map(
+    [...journalPhotoArchive, ...journalVideoArchive, ...greciaTurchiaMedia].map((item) => [item.id, item]),
+  ).values(),
 );
 
 export const journalMediaArchiveByCategory: Record<
@@ -99,6 +110,5 @@ export const journalMediaArchiveByCategory: Record<
   readonly JournalMediaItem[]
 > = {
   preparazione: journalMediaArchive.filter((item) => item.category === "preparazione"),
-  test: journalMediaArchive.filter((item) => item.category === "test"),
-  viaggio: journalMediaArchive.filter((item) => item.category === "viaggio"),
+  "grecia-turchia": journalMediaArchive.filter((item) => item.category === "grecia-turchia"),
 };

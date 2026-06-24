@@ -4,7 +4,11 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "gallery:optimize": "node scripts/ensure-gallery-variants.mjs",
+    "gallery:import:grecia-turchia": "C:\\Users\\orlan\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe scripts/import_grecia_turchia_media.py",
     "dev": "vite",
+    "predev": "npm run gallery:optimize",
+    "prebuild": "npm run gallery:optimize",
     "build": "tsc -b && vite build",
     "preview": "vite preview"
   },
