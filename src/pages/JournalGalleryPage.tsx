@@ -12,17 +12,13 @@ import {
 } from "../data/journalMediaArchive";
 import type { JournalMediaCategory, JournalMediaItem } from "../types/content";
 
-const mediaAspectRatios = {
-  landscape: "16 / 9",
-  portrait: "9 / 16",
-  square: "1 / 1",
-} as const;
-
 const mediaAspectValues = {
   landscape: 16 / 9,
   portrait: 9 / 16,
   square: 1,
 } as const;
+
+const galleryVideoPreviewRootMargin = "220px 0px";
 
 type LightboxState = {
   section: JournalMediaCategory;
@@ -47,14 +43,106 @@ type GalleryVideoPreviewProps = {
 };
 
 function GalleryVideoPreview({ item }: GalleryVideoPreviewProps) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const previewVideoRef = useRef<HTMLVideoElement | null>(null);
+  const [isReady, setIsReady] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [shouldLoad, setShouldLoad] = useState(false);
+  const [aspectRatio, setAspectRatio] = useState(resolveFallbackAspectRatio(item));
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const reduceMotionMedia = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    if (reduceMotionMedia.matches) {
+      return;
+    }
+
+    const container = containerRef.current;
+
+    if (!container) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const intersecting = entry.isIntersecting;
+
+        setIsVisible(intersecting);
+
+        if (intersecting) {
+          setShouldLoad(true);
+        }
+      },
+      {
+        rootMargin: galleryVideoPreviewRootMargin,
+        threshold: 0.35,
+      },
+    );
+
+    observer.observe(container);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    const video = previewVideoRef.current;
+
+    if (!video) {
+      return;
+    }
+
+    if (!isVisible || !isReady) {
+      video.pause();
+      video.currentTime = 0;
+      return;
+    }
+
+    video.muted = true;
+    video.defaultMuted = true;
+
+    void video.play().catch(() => {});
+
+    return () => {
+      video.pause();
+      video.currentTime = 0;
+    };
+  }, [isReady, isVisible]);
+
   return (
     <div
       aria-hidden="true"
-      className="journal-media-wall__video-card journal-media-wall__video-card--placeholder"
+      className={`journal-media-wall__video-card${isReady ? " is-ready" : " journal-media-wall__video-card--placeholder"}`}
+      ref={containerRef}
       style={{
-        aspectRatio: mediaAspectRatios[item.orientation],
+        aspectRatio,
       }}
     >
+      {shouldLoad ? (
+        <video
+          className="journal-media-wall__video-preview"
+          loop
+          muted
+          onLoadedData={() => setIsReady(true)}
+          onLoadedMetadata={(event) => {
+            const { videoHeight, videoWidth } = event.currentTarget;
+
+            if (videoWidth > 0 && videoHeight > 0) {
+              setAspectRatio(videoWidth / videoHeight);
+            }
+          }}
+          playsInline
+          preload={isVisible ? "auto" : "metadata"}
+          ref={previewVideoRef}
+        >
+          <source src={item.src} />
+        </video>
+      ) : null}
       <span className="journal-media-wall__video-badge">Video</span>
       <span className="journal-media-wall__video-icon">{"\u25B6"}</span>
     </div>
