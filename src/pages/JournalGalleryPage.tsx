@@ -23,7 +23,6 @@ const mediaAspectValues = {
   portrait: 9 / 16,
   square: 1,
 } as const;
-const galleryVideoPreviewDurationMs = 2200;
 
 type LightboxState = {
   section: JournalMediaCategory;
@@ -48,111 +47,15 @@ type GalleryVideoPreviewProps = {
 };
 
 function GalleryVideoPreview({ item }: GalleryVideoPreviewProps) {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const previewVideoRef = useRef<HTMLVideoElement | null>(null);
-  const previewTimeoutRef = useRef<number | null>(null);
-  const [isReady, setIsReady] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-  const [shouldLoad, setShouldLoad] = useState(false);
-  const [aspectRatio, setAspectRatio] = useState(resolveFallbackAspectRatio(item));
-
-  useEffect(() => {
-    const container = containerRef.current;
-
-    if (!container) {
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsVisible(entry.isIntersecting);
-
-        if (entry.isIntersecting) {
-          setShouldLoad(true);
-        }
-      },
-      {
-        rootMargin: "160px 0px",
-        threshold: 0.35,
-      },
-    );
-
-    observer.observe(container);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
-  useEffect(() => {
-    const video = previewVideoRef.current;
-
-    if (!video) {
-      return;
-    }
-
-    if (previewTimeoutRef.current !== null) {
-      window.clearTimeout(previewTimeoutRef.current);
-      previewTimeoutRef.current = null;
-    }
-
-    if (!isVisible) {
-      video.pause();
-      video.currentTime = 0;
-      return;
-    }
-
-    if (!shouldLoad || !isReady) {
-      return;
-    }
-
-    video.muted = true;
-    video.currentTime = 0;
-
-    void video.play().then(() => {
-      previewTimeoutRef.current = window.setTimeout(() => {
-        video.pause();
-        previewTimeoutRef.current = null;
-      }, galleryVideoPreviewDurationMs);
-    }).catch(() => {});
-
-    return () => {
-      if (previewTimeoutRef.current !== null) {
-        window.clearTimeout(previewTimeoutRef.current);
-        previewTimeoutRef.current = null;
-      }
-
-      video.pause();
-    };
-  }, [isReady, isVisible, shouldLoad]);
-
   return (
     <div
       aria-hidden="true"
-      className={`journal-media-wall__video-card${isReady ? " is-ready" : ""}`}
-      ref={containerRef}
+      className="journal-media-wall__video-card journal-media-wall__video-card--placeholder"
       style={{
-        aspectRatio,
+        aspectRatio: mediaAspectRatios[item.orientation],
       }}
     >
-      <video
-        className="journal-media-wall__video-preview"
-        loop={false}
-        muted
-        onLoadedData={() => setIsReady(true)}
-        onLoadedMetadata={(event) => {
-          const { videoHeight, videoWidth } = event.currentTarget;
-
-          if (videoWidth > 0 && videoHeight > 0) {
-            setAspectRatio(videoWidth / videoHeight);
-          }
-        }}
-        playsInline
-        preload={shouldLoad ? "metadata" : "none"}
-        ref={previewVideoRef}
-      >
-        {shouldLoad ? <source src={item.src} /> : null}
-      </video>
+      <span className="journal-media-wall__video-badge">Video</span>
       <span className="journal-media-wall__video-icon">{"\u25B6"}</span>
     </div>
   );
@@ -459,10 +362,10 @@ export function JournalGalleryPage() {
                     aria-label={`Apri ${item.alt} nel popup`}
                     className="journal-media-wall__item"
                     key={item.id}
-                  onClick={() => openLightbox(section.id, index)}
-                  type="button"
-                >
-                  {item.kind === "video" ? (
+                    onClick={() => openLightbox(section.id, index)}
+                    type="button"
+                  >
+                    {item.kind === "video" ? (
                       <GalleryVideoPreview item={item} />
                     ) : (
                       <img
