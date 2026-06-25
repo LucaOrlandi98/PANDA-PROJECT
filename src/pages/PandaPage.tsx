@@ -1,26 +1,24 @@
 import { Link } from "react-router-dom";
 import { SectionIntro } from "../components/SectionIntro";
 import { TimelineVertical } from "../components/TimelineVertical";
-import { VehicleSpecCard } from "../components/VehicleSpecCard";
-import { pandaSpecs, timeline } from "../data/siteContent";
+import { timeline } from "../data/siteContent";
 
 export function PandaPage() {
-  const visibleSpecs = pandaSpecs.filter(
-    (item) => item.label !== "Stato" && item.label !== "Direzione",
-  );
-
   return (
-    <div className="page-stack">
-      <section className="page-section">
-        <SectionIntro
-          kicker="Scheda rapida"
-          title="Coordinate utili"
-        />
-        <div className="card-grid">
-          {visibleSpecs.map((item) => (
-            <VehicleSpecCard key={item.label} {...item} />
-          ))}
-        </div>
+    <div className="page-stack journal-page">
+      <section className="page-section journal-page__hero">
+        <p className="eyebrow">La Panda</p>
+        <h1>La Panda</h1>
+        <p className="journal-page__lead">
+          La Panda non e soltanto il mezzo con cui viaggio, ma il simbolo di un modo diverso di
+          viaggiare, con poco, senza avere tutto sotto controllo e lasciando spazio agli
+          imprevisti.
+        </p>
+        <p className="journal-page__lead">
+          Per dimostrare che non serve avere grandi mezzi, molti soldi o grande preparazione per
+          vivere esperienze incredibili. Serve soltanto il coraggio di mettersi in gioco e
+          partire.
+        </p>
       </section>
 
       <section className="page-section">

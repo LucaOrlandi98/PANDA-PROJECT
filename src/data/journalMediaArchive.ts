@@ -34,14 +34,14 @@ const journalPhotoArchive: readonly JournalMediaItem[] = [
     alt: "Dettaglio del ponte e del gruppo ruota",
     category: "preparazione",
     id: "ponte-gruppo-ruota",
-    orientation: "square",
+    orientation: "landscape",
     path: "assets/images/panda-axle.jpg",
   }),
   createJournalPhotoItem({
     alt: "Panda Anna vista frontale in garage",
     category: "preparazione",
     id: "pandanna-garage",
-    orientation: "portrait",
+    orientation: "landscape",
     path: "assets/images/panda-front-garage.jpg",
   }),
   createJournalPhotoItem({
@@ -55,7 +55,7 @@ const journalPhotoArchive: readonly JournalMediaItem[] = [
     alt: "Sottoscocca della Panda in lavorazione",
     category: "preparazione",
     id: "sottoscocca-panda",
-    orientation: "portrait",
+    orientation: "landscape",
     path: "assets/images/panda-underbody.jpg",
   }),
 ];

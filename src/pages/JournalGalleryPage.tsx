@@ -14,13 +14,13 @@ import type { JournalMediaCategory, JournalMediaItem } from "../types/content";
 
 const mediaAspectRatios = {
   landscape: "16 / 9",
-  portrait: "4 / 5",
+  portrait: "9 / 16",
   square: "1 / 1",
 } as const;
 
 const mediaAspectValues = {
   landscape: 16 / 9,
-  portrait: 4 / 5,
+  portrait: 9 / 16,
   square: 1,
 } as const;
 const galleryVideoPreviewDurationMs = 2200;
@@ -32,10 +32,14 @@ type LightboxState = {
 
 const galleryImageSizes = "(max-width: 719px) 45vw, (max-width: 1023px) 30vw, 240px";
 
+const resolveFallbackAspectRatio = (item: JournalMediaItem) => mediaAspectValues[item.orientation];
+
 type LightboxCarouselProps = {
   items: readonly JournalMediaItem[];
   activeIndex: number;
   onChange: (index: number) => void;
+  onMediaReady: (itemId: string, width: number, height: number) => void;
+  resolvedAspectRatio: number;
   videoRefs: MutableRefObject<(HTMLVideoElement | null)[]>;
 };
 
@@ -50,6 +54,7 @@ function GalleryVideoPreview({ item }: GalleryVideoPreviewProps) {
   const [isReady, setIsReady] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [shouldLoad, setShouldLoad] = useState(false);
+  const [aspectRatio, setAspectRatio] = useState(resolveFallbackAspectRatio(item));
 
   useEffect(() => {
     const container = containerRef.current;
@@ -127,7 +132,7 @@ function GalleryVideoPreview({ item }: GalleryVideoPreviewProps) {
       className={`journal-media-wall__video-card${isReady ? " is-ready" : ""}`}
       ref={containerRef}
       style={{
-        aspectRatio: mediaAspectRatios[item.orientation],
+        aspectRatio,
       }}
     >
       <video
@@ -135,6 +140,13 @@ function GalleryVideoPreview({ item }: GalleryVideoPreviewProps) {
         loop={false}
         muted
         onLoadedData={() => setIsReady(true)}
+        onLoadedMetadata={(event) => {
+          const { videoHeight, videoWidth } = event.currentTarget;
+
+          if (videoWidth > 0 && videoHeight > 0) {
+            setAspectRatio(videoWidth / videoHeight);
+          }
+        }}
         playsInline
         preload={shouldLoad ? "metadata" : "none"}
         ref={previewVideoRef}
@@ -150,6 +162,8 @@ function LightboxCarousel({
   items,
   activeIndex,
   onChange,
+  onMediaReady,
+  resolvedAspectRatio,
   videoRefs,
 }: LightboxCarouselProps) {
   const activeItem = items[activeIndex] ?? items[0];
@@ -203,7 +217,7 @@ function LightboxCarousel({
     <div
       className="journal-carousel journal-carousel--lightbox"
       style={{
-        maxWidth: `min(100%, calc(var(--journal-carousel-max-height) * ${mediaAspectValues[activeItem.orientation]}))`,
+        maxWidth: `min(100%, calc(var(--journal-carousel-max-height) * ${resolvedAspectRatio}))`,
       }}
     >
       <div
@@ -213,7 +227,7 @@ function LightboxCarousel({
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerEnd}
         style={{
-          aspectRatio: mediaAspectRatios[activeItem.orientation],
+          aspectRatio: resolvedAspectRatio,
         }}
       >
         <div
@@ -230,6 +244,13 @@ function LightboxCarousel({
                   className="journal-carousel__asset"
                   controls
                   loop
+                  onLoadedMetadata={(event) => {
+                    const { videoHeight, videoWidth } = event.currentTarget;
+
+                    if (videoWidth > 0 && videoHeight > 0) {
+                      onMediaReady(item.id, videoWidth, videoHeight);
+                    }
+                  }}
                   playsInline
                   preload={index === activeIndex ? "metadata" : "none"}
                   ref={(element) => {
@@ -243,6 +264,13 @@ function LightboxCarousel({
                   alt={item.alt}
                   className="journal-carousel__asset"
                   decoding="async"
+                  onLoad={(event) => {
+                    const { naturalHeight, naturalWidth } = event.currentTarget;
+
+                    if (naturalWidth > 0 && naturalHeight > 0) {
+                      onMediaReady(item.id, naturalWidth, naturalHeight);
+                    }
+                  }}
                   src={item.lightboxSrc ?? item.src}
                 />
               )}
@@ -277,6 +305,7 @@ function LightboxCarousel({
 
 export function JournalGalleryPage() {
   const [lightboxState, setLightboxState] = useState<LightboxState | null>(null);
+  const [measuredAspectRatios, setMeasuredAspectRatios] = useState<Record<string, number>>({});
   const lightboxVideoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   const lightboxItems = lightboxState
@@ -284,6 +313,9 @@ export function JournalGalleryPage() {
     : [];
   const activeIndex = lightboxState?.index ?? 0;
   const activeItem = lightboxItems[activeIndex];
+  const activeAspectRatio = activeItem
+    ? measuredAspectRatios[activeItem.id] ?? resolveFallbackAspectRatio(activeItem)
+    : mediaAspectValues.landscape;
 
   useEffect(() => {
     lightboxVideoRefs.current.forEach((video, index) => {
@@ -359,6 +391,25 @@ export function JournalGalleryPage() {
       return {
         ...current,
         index: (index + items.length) % items.length,
+      };
+    });
+  };
+
+  const handleMediaReady = (itemId: string, width: number, height: number) => {
+    if (width <= 0 || height <= 0) {
+      return;
+    }
+
+    const aspectRatio = width / height;
+
+    setMeasuredAspectRatios((current) => {
+      if (current[itemId] && Math.abs(current[itemId] - aspectRatio) < 0.0001) {
+        return current;
+      }
+
+      return {
+        ...current,
+        [itemId]: aspectRatio,
       };
     });
   };
@@ -479,6 +530,8 @@ export function JournalGalleryPage() {
               activeIndex={activeIndex}
               items={lightboxItems}
               onChange={setLightboxIndex}
+              onMediaReady={handleMediaReady}
+              resolvedAspectRatio={activeAspectRatio}
               videoRefs={lightboxVideoRefs}
             />
           </div>

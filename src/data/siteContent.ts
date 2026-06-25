@@ -121,14 +121,14 @@ export const timeline: TimelineItem[] = [
     title: "Direzione Tajikistan",
     description:
       "Pianificare il raggiungimento del Tajikistan come obiettivo geografico corrente del progetto.",
-    status: "active",
+    status: "done",
   },
   {
     phase: "10",
     title: "Russia",
     description:
       "Preparare visti, documentazione e strategia per l'attraversata della Russia.",
-    status: "next",
+    status: "active",
   },
   {
     phase: "11",
