@@ -7,10 +7,6 @@ export function JournalPage() {
       <section className="page-section journal-page__hero">
         <p className="eyebrow">Journal</p>
         <h1>Journal</h1>
-        <p className="journal-page__lead">
-          Tre aree chiare per dare al progetto un archivio leggibile: galleria foto + video,
-          diario di bordo ora attivo e attrezzatura gia ordinata.
-        </p>
       </section>
 
       <section className="page-section">
