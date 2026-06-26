@@ -18,7 +18,9 @@ const mediaAspectValues = {
   square: 1,
 } as const;
 
-const galleryVideoPreviewRootMargin = "220px 0px";
+const galleryVideoPreviewRootMargin = "960px 0px";
+const galleryVideoPreviewThreshold = 0.01;
+const priorityGalleryPreviewCount = 6;
 
 type LightboxState = {
   section: JournalMediaCategory;
@@ -40,27 +42,18 @@ type LightboxCarouselProps = {
 
 type GalleryVideoPreviewProps = {
   item: JournalMediaItem;
+  priority?: boolean;
 };
 
-function GalleryVideoPreview({ item }: GalleryVideoPreviewProps) {
+function GalleryVideoPreview({ item, priority = false }: GalleryVideoPreviewProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const previewVideoRef = useRef<HTMLVideoElement | null>(null);
   const [isReady, setIsReady] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-  const [shouldLoad, setShouldLoad] = useState(false);
+  const [isVisible, setIsVisible] = useState(priority);
+  const [shouldLoad, setShouldLoad] = useState(priority);
   const [aspectRatio, setAspectRatio] = useState(resolveFallbackAspectRatio(item));
 
   useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-
-    const reduceMotionMedia = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-    if (reduceMotionMedia.matches) {
-      return;
-    }
-
     const container = containerRef.current;
 
     if (!container) {
@@ -79,7 +72,7 @@ function GalleryVideoPreview({ item }: GalleryVideoPreviewProps) {
       },
       {
         rootMargin: galleryVideoPreviewRootMargin,
-        threshold: 0.35,
+        threshold: galleryVideoPreviewThreshold,
       },
     );
 
@@ -97,7 +90,7 @@ function GalleryVideoPreview({ item }: GalleryVideoPreviewProps) {
       return;
     }
 
-    if (!isVisible || !isReady) {
+    if (!isReady || !isVisible) {
       video.pause();
       video.currentTime = 0;
       return;
@@ -125,6 +118,7 @@ function GalleryVideoPreview({ item }: GalleryVideoPreviewProps) {
     >
       {shouldLoad ? (
         <video
+          autoPlay
           className="journal-media-wall__video-preview"
           loop
           muted
@@ -137,7 +131,7 @@ function GalleryVideoPreview({ item }: GalleryVideoPreviewProps) {
             }
           }}
           playsInline
-          preload={isVisible ? "auto" : "metadata"}
+          preload="auto"
           ref={previewVideoRef}
         >
           <source src={item.src} />
@@ -435,7 +429,7 @@ export function JournalGalleryPage() {
           </div>
         </section>
 
-        {journalMediaSections.map((section) => {
+        {journalMediaSections.map((section, sectionIndex) => {
           const items = journalMediaArchiveByCategory[section.id];
 
           return (
@@ -445,33 +439,39 @@ export function JournalGalleryPage() {
               </div>
 
               <div className="journal-media-wall">
-                {items.map((item, index) => (
-                  <button
-                    aria-label={`Apri ${item.alt} nel popup`}
-                    className="journal-media-wall__item"
-                    key={item.id}
-                    onClick={() => openLightbox(section.id, index)}
-                    type="button"
-                  >
-                    {item.kind === "video" ? (
-                      <GalleryVideoPreview item={item} />
-                    ) : (
-                      <img
-                        alt={item.alt}
-                        className="journal-media-wall__asset"
-                        decoding="async"
-                        loading="lazy"
-                        sizes={galleryImageSizes}
-                        src={item.thumbnailSrc ?? item.src}
-                        srcSet={
-                          item.thumbnailSrc && item.lightboxSrc
-                            ? `${item.thumbnailSrc} 720w, ${item.lightboxSrc} 1600w`
-                            : undefined
-                        }
-                      />
-                    )}
-                  </button>
-                ))}
+                {items.map((item, index) => {
+                  const isPriorityPreview =
+                    sectionIndex === 0 && index < priorityGalleryPreviewCount;
+
+                  return (
+                    <button
+                      aria-label={`Apri ${item.alt} nel popup`}
+                      className="journal-media-wall__item"
+                      key={item.id}
+                      onClick={() => openLightbox(section.id, index)}
+                      type="button"
+                    >
+                      {item.kind === "video" ? (
+                        <GalleryVideoPreview item={item} priority={isPriorityPreview} />
+                      ) : (
+                        <img
+                          alt={item.alt}
+                          className="journal-media-wall__asset"
+                          decoding="async"
+                          fetchPriority={isPriorityPreview ? "high" : "auto"}
+                          loading={isPriorityPreview ? "eager" : "lazy"}
+                          sizes={galleryImageSizes}
+                          src={item.thumbnailSrc ?? item.src}
+                          srcSet={
+                            item.thumbnailSrc && item.lightboxSrc
+                              ? `${item.thumbnailSrc} 720w, ${item.lightboxSrc} 1600w`
+                              : undefined
+                          }
+                        />
+                      )}
+                    </button>
+                  );
+                })}
               </div>
             </section>
           );
