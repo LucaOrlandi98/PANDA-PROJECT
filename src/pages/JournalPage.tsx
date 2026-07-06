@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import { journalSections } from "../data/journalContent";
+import { filterVisibleLinkCards, isSectionVisible } from "../data/temporarySite";
 
 export function JournalPage() {
+  const visibleJournalSections = filterVisibleLinkCards(journalSections);
+
   return (
     <div className="page-stack journal-page">
       <section className="page-section journal-page__hero">
@@ -9,34 +12,36 @@ export function JournalPage() {
         <h1>Journal</h1>
       </section>
 
-      <section className="page-section">
-        <div className="journal-hub-grid">
-          {journalSections.map((section) => (
-            <Link className="journal-hub-card action-card" key={section.to} to={section.to}>
-              <p className="eyebrow">{section.label}</p>
-              <h2>{section.title}</h2>
-              <div className="journal-hub-card__footer">
-                <span>{section.meta}</span>
-                <span className="journal-hub-card__arrow" aria-hidden="true">
-                  <svg
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M8 16L16 8M9.5 8H16V14.5"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1.8"
-                    />
-                  </svg>
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
+      {isSectionVisible("journal.hub") && visibleJournalSections.length > 0 ? (
+        <section className="page-section">
+          <div className="journal-hub-grid">
+            {visibleJournalSections.map((section) => (
+              <Link className="journal-hub-card action-card" key={section.to} to={section.to}>
+                <p className="eyebrow">{section.label}</p>
+                <h2>{section.title}</h2>
+                <div className="journal-hub-card__footer">
+                  <span>{section.meta}</span>
+                  <span className="journal-hub-card__arrow" aria-hidden="true">
+                    <svg
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M8 16L16 8M9.5 8H16V14.5"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.8"
+                      />
+                    </svg>
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
     </div>
   );
 }

@@ -3,6 +3,12 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { FooterNavMobile } from "./components/FooterNavMobile";
 import { MenuSheet } from "./components/MenuSheet";
 import { menuNav, primaryNav } from "./data/siteContent";
+import {
+  filterVisibleNavItems,
+  isRouteVisible,
+  pickVisibleRoute,
+  type TemporaryRouteId,
+} from "./data/temporarySite";
 
 const loadHomePage = () =>
   import("./pages/HomePage").then((module) => ({
@@ -180,18 +186,43 @@ function AppShell() {
   const [menuOpen, setMenuOpen] = useState(false);
   const isHome = location.pathname === "/";
   const isRoadbook = location.pathname === "/route";
+  const defaultVisibleRoute = pickVisibleRoute([
+    "/",
+    "/panda",
+    "/route",
+    "/journal",
+    "/journal/foto",
+    "/journal/diario",
+    "/journal/altro",
+    "/contact",
+  ]);
   const activePrimarySection = getPrimarySection(location.pathname);
   const currentLabel = pageLabels[location.pathname] ?? "Panda Project";
-  const visiblePrimaryNav = primaryNav.filter(
-    (item) => item.to !== activePrimarySection,
+  const visiblePrimaryNav = filterVisibleNavItems(
+    primaryNav.filter((item) => item.to !== activePrimarySection),
   );
   const menuPrimaryNav = location.pathname.startsWith("/journal")
-    ? primaryNav
+    ? filterVisibleNavItems(primaryNav)
     : visiblePrimaryNav;
+  const visibleMenuNav = filterVisibleNavItems(menuNav);
   const desktopNavItems =
-    location.pathname === "/contact"
+    location.pathname === "/contact" || !isRouteVisible("/contact")
       ? visiblePrimaryNav
       : [...visiblePrimaryNav, CONTACT_NAV_ITEM];
+
+  const renderRouteElement = (
+    route: TemporaryRouteId,
+    element: ReactNode,
+    fallbackRoutes: readonly TemporaryRouteId[],
+  ) => {
+    if (isRouteVisible(route) || !defaultVisibleRoute) {
+      return element;
+    }
+
+    const fallbackRoute = pickVisibleRoute(fallbackRoutes) ?? defaultVisibleRoute;
+
+    return <Navigate replace to={fallbackRoute} />;
+  };
 
   useEffect(() => {
     setMenuOpen(false);
@@ -292,7 +323,7 @@ function AppShell() {
         onClose={() => setMenuOpen(false)}
         open={menuOpen}
         primaryItems={menuPrimaryNav}
-        secondaryItems={menuNav}
+        secondaryItems={visibleMenuNav}
       />
       <FooterNavMobile
         currentLabel={currentLabel}
@@ -309,15 +340,74 @@ function AppShell() {
         <RouteBoundary resetKey={location.pathname}>
           <Suspense fallback={<RouteLoader />}>
             <Routes>
-              <Route element={<HomePage />} path="/" />
+              <Route
+                element={renderRouteElement("/", <HomePage />, [
+                  "/panda",
+                  "/route",
+                  "/journal",
+                  "/contact",
+                ])}
+                path="/"
+              />
               <Route element={<Navigate replace to="/panda" />} path="/project" />
-              <Route element={<PandaPage />} path="/panda" />
-              <Route element={<RoutePage />} path="/route" />
+              <Route
+                element={renderRouteElement("/panda", <PandaPage />, [
+                  "/",
+                  "/route",
+                  "/journal",
+                  "/contact",
+                ])}
+                path="/panda"
+              />
+              <Route
+                element={renderRouteElement("/route", <RoutePage />, [
+                  "/",
+                  "/panda",
+                  "/journal",
+                  "/contact",
+                ])}
+                path="/route"
+              />
               <Route element={<Navigate replace to="/route" />} path="/live-map" />
-              <Route element={<JournalPage />} path="/journal" />
-              <Route element={<JournalGalleryPage />} path="/journal/foto" />
-              <Route element={<JournalLogPage />} path="/journal/diario" />
-              <Route element={<JournalOtherPage />} path="/journal/altro" />
+              <Route
+                element={renderRouteElement("/journal", <JournalPage />, [
+                  "/",
+                  "/panda",
+                  "/route",
+                  "/contact",
+                ])}
+                path="/journal"
+              />
+              <Route
+                element={renderRouteElement("/journal/foto", <JournalGalleryPage />, [
+                  "/journal",
+                  "/",
+                  "/panda",
+                  "/route",
+                  "/contact",
+                ])}
+                path="/journal/foto"
+              />
+              <Route
+                element={renderRouteElement("/journal/diario", <JournalLogPage />, [
+                  "/journal",
+                  "/",
+                  "/panda",
+                  "/route",
+                  "/contact",
+                ])}
+                path="/journal/diario"
+              />
+              <Route
+                element={renderRouteElement("/journal/altro", <JournalOtherPage />, [
+                  "/journal",
+                  "/",
+                  "/panda",
+                  "/route",
+                  "/contact",
+                ])}
+                path="/journal/altro"
+              />
               <Route
                 element={<Navigate replace to="/journal/altro" />}
                 path="/resources"
@@ -327,7 +417,15 @@ function AppShell() {
                 element={<Navigate replace to="/contact" />}
                 path="/partners"
               />
-              <Route element={<ContactPage />} path="/contact" />
+              <Route
+                element={renderRouteElement("/contact", <ContactPage />, [
+                  "/",
+                  "/panda",
+                  "/route",
+                  "/journal",
+                ])}
+                path="/contact"
+              />
             </Routes>
           </Suspense>
         </RouteBoundary>

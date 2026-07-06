@@ -10,6 +10,10 @@ import {
   journalMediaArchiveByCategory,
   journalMediaSections,
 } from "../data/journalMediaArchive";
+import {
+  isSectionVisible,
+  pickVisibleRoute,
+} from "../data/temporarySite";
 import type { JournalMediaCategory, JournalMediaItem } from "../types/content";
 
 const mediaAspectValues = {
@@ -292,6 +296,14 @@ export function JournalGalleryPage() {
   const [lightboxState, setLightboxState] = useState<LightboxState | null>(null);
   const [measuredAspectRatios, setMeasuredAspectRatios] = useState<Record<string, number>>({});
   const lightboxVideoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const visibleMediaSections = journalMediaSections.filter((section) =>
+    isSectionVisible(
+      section.id === "preparazione"
+        ? "journal.gallery.preparazione"
+        : "journal.gallery.greciaTurchia",
+    ),
+  );
+  const backLinkTarget = pickVisibleRoute(["/journal", "/", "/panda", "/route", "/contact"]);
 
   const lightboxItems = lightboxState
     ? journalMediaArchiveByCategory[lightboxState.section]
@@ -414,22 +426,24 @@ export function JournalGalleryPage() {
           <h1>Galleria</h1>
         </section>
 
-        <section className="page-section">
-          <div className="journal-photo-page__nav">
-            {journalMediaSections.map((section) => (
-              <button
-                className="journal-photo-page__nav-button"
-                key={section.id}
-                onClick={() => scrollToSection(section.id)}
-                type="button"
-              >
-                {section.label}
-              </button>
-            ))}
-          </div>
-        </section>
+        {isSectionVisible("journal.galleryNav") && visibleMediaSections.length > 0 ? (
+          <section className="page-section">
+            <div className="journal-photo-page__nav">
+              {visibleMediaSections.map((section) => (
+                <button
+                  className="journal-photo-page__nav-button"
+                  key={section.id}
+                  onClick={() => scrollToSection(section.id)}
+                  type="button"
+                >
+                  {section.label}
+                </button>
+              ))}
+            </div>
+          </section>
+        ) : null}
 
-        {journalMediaSections.map((section, sectionIndex) => {
+        {visibleMediaSections.map((section, sectionIndex) => {
           const items = journalMediaArchiveByCategory[section.id];
 
           return (
@@ -477,13 +491,15 @@ export function JournalGalleryPage() {
           );
         })}
 
-        <section className="cta-section">
-          <div className="button-row journal-photo-page__actions">
-            <Link className="button button-secondary button-small" to="/journal">
-              Torna a Journal
-            </Link>
-          </div>
-        </section>
+        {isSectionVisible("journal.gallery.cta") && backLinkTarget ? (
+          <section className="cta-section">
+            <div className="button-row journal-photo-page__actions">
+              <Link className="button button-secondary button-small" to={backLinkTarget}>
+                Torna indietro
+              </Link>
+            </div>
+          </section>
+        ) : null}
       </div>
 
       {lightboxState && activeItem ? (

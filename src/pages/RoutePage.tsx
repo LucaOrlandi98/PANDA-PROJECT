@@ -1,4 +1,5 @@
 import { Suspense, lazy } from "react";
+import { isSectionVisible } from "../data/temporarySite";
 
 const MAP_EMBED =
   "https://www.google.com/maps/d/u/0/embed?mid=17lsE23viS_oQ2LHWF9lOAr3X_02dE3U";
@@ -38,37 +39,43 @@ export function RoutePage() {
 
       <div className="roadbook-page__content">
         <div className="roadbook-page__map-grid">
-          <div className="roadbook-page__map roadbook-page__map--mymaps">
-            <div className="map-frame">
-              <iframe
-                src={MAP_EMBED}
-                title="Panda Project roadbook map"
-                loading="lazy"
-              />
+          {isSectionVisible("route.googleMap") ? (
+            <div className="roadbook-page__map roadbook-page__map--mymaps">
+              <div className="map-frame">
+                <iframe
+                  src={MAP_EMBED}
+                  title="Panda Project roadbook map"
+                  loading="lazy"
+                />
+              </div>
             </div>
-          </div>
-          <div className="roadbook-page__map roadbook-page__map--live">
-            <Suspense
-              fallback={
-                <article className="roadbook-live-card roadbook-live-card--loading">
-                  <p className="eyebrow">Live map</p>
-                  <h3>Caricamento live map</h3>
-                  <p>La mappa live viene inizializzata appena entri nella sezione.</p>
-                </article>
-              }
-            >
-              <LiveMapCanvas />
-            </Suspense>
-          </div>
+          ) : null}
+          {isSectionVisible("route.liveMap") ? (
+            <div className="roadbook-page__map roadbook-page__map--live">
+              <Suspense
+                fallback={
+                  <article className="roadbook-live-card roadbook-live-card--loading">
+                    <p className="eyebrow">Live map</p>
+                    <h3>Caricamento live map</h3>
+                    <p>La mappa live viene inizializzata appena entri nella sezione.</p>
+                  </article>
+                }
+              >
+                <LiveMapCanvas />
+              </Suspense>
+            </div>
+          ) : null}
         </div>
-        <div className="roadbook-page__metrics">
-          {roadbookStats.map((item) => (
-            <article className="roadbook-stat" key={item.label}>
-              <p>{item.label}</p>
-              <h3>{item.value}</h3>
-            </article>
-          ))}
-        </div>
+        {isSectionVisible("route.metrics") ? (
+          <div className="roadbook-page__metrics">
+            {roadbookStats.map((item) => (
+              <article className="roadbook-stat" key={item.label}>
+                <p>{item.label}</p>
+                <h3>{item.value}</h3>
+              </article>
+            ))}
+          </div>
+        ) : null}
       </div>
     </div>
   );

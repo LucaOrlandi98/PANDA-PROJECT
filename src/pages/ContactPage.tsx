@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
+import { isRouteVisible, isSectionVisible, pickVisibleRoute } from "../data/temporarySite";
 
 export function ContactPage() {
+  const journalLink = isRouteVisible("/journal") ? "/journal" : undefined;
+  const fallbackLink = pickVisibleRoute(["/", "/panda", "/route"]);
+
   return (
     <div className="page-stack">
       <section className="page-section journal-page__hero">
@@ -11,21 +15,29 @@ export function ContactPage() {
         </p>
       </section>
 
-      <section className="cta-section">
-        <div className="button-row">
-          <a
-            className="button button-primary"
-            href="https://www.instagram.com/lucaorlandi____/"
-            rel="noreferrer"
-            target="_blank"
-          >
-            Apri Instagram
-          </a>
-          <Link className="button button-secondary" to="/journal">
-            Apri Journal
-          </Link>
-        </div>
-      </section>
+      {isSectionVisible("contact.cta") ? (
+        <section className="cta-section">
+          <div className="button-row">
+            <a
+              className="button button-primary"
+              href="https://www.instagram.com/lucaorlandi____/"
+              rel="noreferrer"
+              target="_blank"
+            >
+              Apri Instagram
+            </a>
+            {journalLink ? (
+              <Link className="button button-secondary" to={journalLink}>
+                Apri Journal
+              </Link>
+            ) : fallbackLink ? (
+              <Link className="button button-secondary" to={fallbackLink}>
+                Vai a una sezione attiva
+              </Link>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
     </div>
   );
 }

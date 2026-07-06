@@ -312,19 +312,6 @@ export const journalOtherEquipmentGroups: JournalReferenceGroup[] = [
       },
     ],
   },
-  {
-    title: "Navigazione e varie",
-    links: [
-      {
-        href: "https://starlink.com/it/residential?referral=RC-481067-34312-6&utm_source=google&utm_medium=paid&utm_campaign=sls_it_src_ggl_brd_stk-bpe&utm_content=sls_it_src_ggl_brd_stk-bpe_res_gsa_v4s_txt_it-it_egn&utm_term=stk-bpe_starlink&gad_source=1&gad_campaignid=21037050396&gbraid=0AAAAAok2xKlYTQ5cM8gwuqzMuJgRwjrZr&gclid=CjwKCAjwspPOBhB9EiwATFbi5MheGTFYzbjMdQRhvw2aENF_l2QyFm6ulLU68yxtpFq8k7vNVW-XjxoCQS4QAvD_BwE",
-        label: "Starlink",
-      },
-      {
-        href: "https://fourxrocker.com/?gad_source=1&gad_campaignid=21719458520&gbraid=0AAAAACJFb2D9YlORPtdFU8G5mZgkC2kEt&gclid=CjwKCAjwspPOBhB9EiwATFbi5AjPGVs5CeMVZSfmM6K4a_USZL7PQKJUp8dMZkhcxrgUI0HZ9zOnvxoCo4cQAvD_BwE",
-        label: "Four x Rocker",
-      },
-    ],
-  },
 ] as const;
 
 export const journalOtherMechanical = [
