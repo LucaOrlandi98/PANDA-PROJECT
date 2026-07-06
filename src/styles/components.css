@@ -1658,6 +1658,23 @@
     justify-self: center;
   }
 
+  .page-shell--home .hero-card--home.hero-card--home-no-aside .hero-media.is-model {
+    display: grid;
+    place-items: center;
+    min-height: clamp(12rem, 36vh, 16rem);
+  }
+
+  .page-shell--home .hero-card--home.hero-card--home-no-aside .hero-model {
+    display: grid;
+    place-items: center;
+  }
+
+  .page-shell--home .hero-card--home.hero-card--home-no-aside .hero-model model-viewer {
+    width: min(100%, 22rem);
+    margin-inline: auto;
+    transform: translate3d(0, -0.2rem, 0);
+  }
+
   .button-row {
     display: grid;
     grid-template-columns: 1fr;
