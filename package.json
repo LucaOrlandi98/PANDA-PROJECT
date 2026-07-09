@@ -6,6 +6,7 @@
   "scripts": {
     "gallery:optimize": "node scripts/ensure-gallery-variants.mjs",
     "gallery:import:grecia-turchia": "C:\\Users\\orlan\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe scripts/import_grecia_turchia_media.py",
+    "site:ripristina": "node scripts/set-temporary-site-mode.mjs ripristina",
     "site:ripristino": "node scripts/set-temporary-site-mode.mjs ripristino",
     "site:oscura": "node scripts/set-temporary-site-mode.mjs oscura",
     "dev": "vite",

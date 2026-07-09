@@ -7,8 +7,13 @@ Modalita disponibili:
 - `ripristino`: sito completo, senza rimozioni temporanee.
 - `oscura`: applica le rimozioni temporanee elencate nel preset `oscura`.
 
+Alias chat/comando:
+
+- `ripristina`: equivale a `ripristino`.
+
 Comandi disponibili:
 
+- `npm run site:ripristina`
 - `npm run site:ripristino`
 - `npm run site:oscura`
 

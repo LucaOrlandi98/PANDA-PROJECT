@@ -2,10 +2,17 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 const requestedMode = process.argv[2];
-const allowedModes = new Set(["ripristino", "oscura"]);
+const modeAliases = {
+  ripristina: "ripristino",
+  ripristino: "ripristino",
+  oscura: "oscura",
+};
+const normalizedMode = modeAliases[requestedMode];
 
-if (!allowedModes.has(requestedMode)) {
-  console.error("Uso: node scripts/set-temporary-site-mode.mjs <ripristino|oscura>");
+if (!normalizedMode) {
+  console.error(
+    "Uso: node scripts/set-temporary-site-mode.mjs <ripristina|ripristino|oscura>",
+  );
   process.exit(1);
 }
 
@@ -21,8 +28,8 @@ if (!modePattern.test(source)) {
 
 const updatedSource = source.replace(
   modePattern,
-  `export const activeTemporarySiteMode: TemporarySiteMode = "${requestedMode}";`,
+  `export const activeTemporarySiteMode: TemporarySiteMode = "${normalizedMode}";`,
 );
 
 writeFileSync(configPath, updatedSource);
-console.log(`Modalita temporanea impostata su: ${requestedMode}`);
+console.log(`Modalita temporanea impostata su: ${normalizedMode}`);

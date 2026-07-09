@@ -53,7 +53,7 @@ const appRoutes: readonly TemporaryRouteId[] = [
 // Chat keywords:
 // - `ripristino`: restore the site to the current complete state.
 // - `oscura`: apply the temporary removals listed in the preset below.
-export const activeTemporarySiteMode: TemporarySiteMode = "oscura";
+export const activeTemporarySiteMode: TemporarySiteMode = "ripristino";
 
 export const temporarySitePresets = {
   ripristino: {
