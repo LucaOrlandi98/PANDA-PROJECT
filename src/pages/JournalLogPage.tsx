@@ -9,7 +9,7 @@ import {
 export function JournalLogPage() {
   const journalLink = isRouteVisible("/journal") ? "/journal" : undefined;
   const routeLink = isRouteVisible("/route") ? "/route" : undefined;
-  const fallbackLink = pickVisibleRoute(["/", "/panda", "/contact"]);
+  const fallbackLink = pickVisibleRoute(["/", "/contact"]);
 
   return (
     <div className="page-stack">

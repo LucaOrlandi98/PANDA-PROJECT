@@ -16,6 +16,7 @@ declare namespace JSX {
       "environment-image"?: string;
       exposure?: string;
       "shadow-intensity"?: string;
+      poster?: string;
       "poster-color"?: string;
       bounds?: string;
       "camera-target"?: string;

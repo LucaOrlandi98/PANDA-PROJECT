@@ -303,7 +303,7 @@ export function JournalGalleryPage() {
         : "journal.gallery.greciaTurchia",
     ),
   );
-  const backLinkTarget = pickVisibleRoute(["/journal", "/", "/panda", "/route", "/contact"]);
+  const backLinkTarget = pickVisibleRoute(["/journal", "/", "/route", "/contact"]);
 
   const lightboxItems = lightboxState
     ? journalMediaArchiveByCategory[lightboxState.section]

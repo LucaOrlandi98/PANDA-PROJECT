@@ -2,7 +2,6 @@ import type { LinkCard, NavItem } from "../types/content";
 
 export type TemporaryRouteId =
   | "/"
-  | "/panda"
   | "/route"
   | "/journal"
   | "/journal/foto"
@@ -12,9 +11,6 @@ export type TemporaryRouteId =
 
 export type TemporarySectionId =
   | "home.supportWidget"
-  | "home.hubCards"
-  | "panda.timeline"
-  | "panda.cta"
   | "route.googleMap"
   | "route.liveMap"
   | "route.metrics"
@@ -34,14 +30,12 @@ export type TemporarySectionId =
 export type TemporarySiteMode = "ripristino" | "oscura";
 
 type TemporarySitePreset = {
-  hiddenHomeCards: readonly TemporaryRouteId[];
   hiddenRoutes: readonly TemporaryRouteId[];
   hiddenSections: readonly TemporarySectionId[];
 };
 
 const appRoutes: readonly TemporaryRouteId[] = [
   "/",
-  "/panda",
   "/route",
   "/journal",
   "/journal/foto",
@@ -57,12 +51,10 @@ export const activeTemporarySiteMode: TemporarySiteMode = "ripristino";
 
 export const temporarySitePresets = {
   ripristino: {
-    hiddenHomeCards: [],
     hiddenRoutes: [],
     hiddenSections: [],
   },
   oscura: {
-    hiddenHomeCards: ["/panda"],
     hiddenRoutes: [
       // "/contact",
     ],
@@ -74,7 +66,6 @@ export const temporarySitePresets = {
 
 export const temporarySiteConfig = temporarySitePresets[activeTemporarySiteMode];
 
-const hiddenHomeCardSet = new Set<TemporaryRouteId>(temporarySiteConfig.hiddenHomeCards);
 const hiddenRouteSet = new Set<TemporaryRouteId>(temporarySiteConfig.hiddenRoutes);
 const hiddenSectionSet = new Set<TemporarySectionId>(temporarySiteConfig.hiddenSections);
 
@@ -84,10 +75,6 @@ export function isRouteVisible(route: TemporaryRouteId) {
 
 export function isSectionVisible(section: TemporarySectionId) {
   return !hiddenSectionSet.has(section);
-}
-
-export function isHomeCardVisible(route: TemporaryRouteId) {
-  return !hiddenHomeCardSet.has(route) && isRouteVisible(route);
 }
 
 export function pickVisibleRoute(routes: readonly TemporaryRouteId[]) {
@@ -104,8 +91,4 @@ export function filterVisibleNavItems<T extends NavItem>(items: readonly T[]) {
 
 export function filterVisibleLinkCards<T extends LinkCard>(items: readonly T[]) {
   return items.filter((item) => !isAppRoute(item.to) || isRouteVisible(item.to));
-}
-
-export function filterVisibleHomeCards<T extends LinkCard>(items: readonly T[]) {
-  return items.filter((item) => !isAppRoute(item.to) || isHomeCardVisible(item.to));
 }

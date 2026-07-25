@@ -9,12 +9,7 @@ export const primaryNav: NavItem[] = [
   {
     label: "Home",
     to: "/",
-    description: "Ingresso al progetto.",
-  },
-  {
-    label: "Panda",
-    to: "/panda",
-    description: "Mezzo, timeline e setup.",
+    description: "Accesso rapido al progetto e ai link principali.",
   },
   {
     label: "Roadbook",
@@ -42,11 +37,6 @@ export const menuNav: NavItem[] = [
 ];
 
 export const hubCards: LinkCard[] = [
-  {
-    buttonLabel: "Apri Panda",
-    title: "Panda",
-    to: "/panda",
-  },
   {
     buttonLabel: "Apri Roadbook",
     title: "Roadbook",

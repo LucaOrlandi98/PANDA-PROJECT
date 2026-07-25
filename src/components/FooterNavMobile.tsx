@@ -28,7 +28,7 @@ export function FooterNavMobile({
       <div className="footer-nav__mobile-actions">
         <a
           aria-label="Apri Instagram"
-          className="footer-nav__icon-link"
+          className="footer-nav__icon-link footer-nav__icon-link--instagram"
           href={instagramUrl}
           rel="noreferrer"
           target="_blank"
@@ -88,7 +88,7 @@ export function FooterNavMobile({
         ))}
         <a
           aria-label="Apri Instagram"
-          className="footer-nav__desktop-icon"
+          className="footer-nav__desktop-icon footer-nav__desktop-icon--instagram"
           href={instagramUrl}
           rel="noreferrer"
           target="_blank"

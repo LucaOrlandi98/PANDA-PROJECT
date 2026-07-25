@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 type HeroProps = {
   className?: string;
+  actionsClassName?: string;
   eyebrow: string;
   title: string;
   description?: string;
@@ -21,6 +22,7 @@ type HeroProps = {
 
 export function MobileHero({
   className,
+  actionsClassName,
   eyebrow,
   title,
   description,
@@ -31,7 +33,9 @@ export function MobileHero({
   aside,
 }: HeroProps) {
   const modelRef = useRef<HTMLElement | null>(null);
+  const [modelVersion, setModelVersion] = useState(0);
   const [isLoaded, setIsLoaded] = useState(!modelSrc);
+  const [hasModelError, setHasModelError] = useState(false);
 
   useEffect(() => {
     if (!modelSrc || !modelRef.current) {
@@ -39,8 +43,14 @@ export function MobileHero({
     }
 
     const model = modelRef.current;
-    const handleReady = () => setIsLoaded(true);
-    const handleError = () => setIsLoaded(true);
+    const handleReady = () => {
+      setHasModelError(false);
+      setIsLoaded(true);
+    };
+    const handleError = () => {
+      setHasModelError(true);
+      setIsLoaded(true);
+    };
 
     model.addEventListener("load", handleReady);
     model.addEventListener("error", handleError);
@@ -54,7 +64,7 @@ export function MobileHero({
       model.removeEventListener("error", handleError);
       window.clearTimeout(timer);
     };
-  }, [modelSrc]);
+  }, [modelSrc, modelVersion]);
 
   return (
     <section className={`hero-card${className ? ` ${className}` : ""}`}>
@@ -66,6 +76,7 @@ export function MobileHero({
               <div className="hero-spinner__ring" />
             </div>
             <model-viewer
+              key={modelVersion}
               ref={modelRef}
               src={modelSrc}
               alt="Panda 3D"
@@ -78,14 +89,30 @@ export function MobileHero({
               poster-color="transparent"
               bounds="tight"
               camera-target="auto auto auto"
-              camera-orbit="36deg 72deg 105%"
-              min-camera-orbit="auto auto 105%"
-              max-camera-orbit="auto auto 105%"
+              camera-orbit="36deg 72deg 88%"
+              min-camera-orbit="auto auto 88%"
+              max-camera-orbit="auto auto 88%"
               interaction-prompt="auto"
               interaction-prompt-threshold="500"
               disable-zoom
               disable-pan
             />
+            {hasModelError ? (
+              <div className="hero-model-fallback" role="status">
+                <p>Il modello 3D non si sta caricando.</p>
+                <button
+                  className="hero-model-fallback__action"
+                  onClick={() => {
+                    setHasModelError(false);
+                    setIsLoaded(false);
+                    setModelVersion((value) => value + 1);
+                  }}
+                  type="button"
+                >
+                  Riprova
+                </button>
+              </div>
+            ) : null}
           </div>
         ) : (
           <img src={image} alt="Panda Project" />
@@ -96,7 +123,7 @@ export function MobileHero({
         <h1>{title}</h1>
         {description ? <p className="hero-copy">{description}</p> : null}
         {primaryCta || secondaryCta ? (
-          <div className="button-row">
+          <div className={`button-row${actionsClassName ? ` ${actionsClassName}` : ""}`}>
             {primaryCta ? (
               <Link className="button button-primary" to={primaryCta.to}>
                 {primaryCta.label}

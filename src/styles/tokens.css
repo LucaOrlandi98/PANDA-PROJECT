@@ -16,6 +16,10 @@
   --shadow: 0 12px 24px rgba(0, 0, 0, 0.14);
   --radius-card: 4px;
   --radius-pill: 4px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
   --page-max-width: 1040px;
   --nav-height: 4.55rem;
   --page-offset-from-nav-mobile: calc(1rem + 20px);
@@ -99,7 +103,7 @@ select {
 @media (max-width: 719px) {
   :root {
     --nav-height: 3.85rem;
-    --nav-offset-top: 0.6rem;
+    --nav-offset-top: calc(var(--safe-top) + 0.35rem);
     --page-offset-from-nav-mobile: calc(0.8rem + 10px);
     --page-flow-gap: 3rem;
     --space-shell-inline-mobile: 0.95rem;

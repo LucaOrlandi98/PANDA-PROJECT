@@ -3,40 +3,49 @@ import { GoFundMeWidget } from "../components/GoFundMeWidget";
 import { MobileHero } from "../components/MobileHero";
 import { hubCards } from "../data/siteContent";
 import {
-  filterVisibleHomeCards,
+  filterVisibleLinkCards,
   isSectionVisible,
 } from "../data/temporarySite";
 import { asset } from "../lib/asset";
 
 export function HomePage() {
   const showSupportWidget = isSectionVisible("home.supportWidget");
-  const visibleHubCards = filterVisibleHomeCards(hubCards);
-  const heroClassName = `hero-card--home${showSupportWidget ? "" : " hero-card--home-no-aside"}`;
+  const visibleHubCards = filterVisibleLinkCards(hubCards);
+  const heroClassName = "hero-card--home hero-card--home-no-aside";
   const homeLinksGridClassName = `card-grid home-links-grid${visibleHubCards.length === 2 ? " home-links-grid--two-up" : ""}`;
+  const modelSrc = asset("assets/models/panda-3d.glb");
+  const showHomeActions = showSupportWidget || visibleHubCards.length > 0;
 
   return (
     <div className="page-stack page-stack--home">
-      <MobileHero
-        aside={
-          showSupportWidget ? (
-            <div className="home-support-widget">
-              <GoFundMeWidget />
-            </div>
-          ) : undefined
-        }
-        className={heroClassName}
-        eyebrow="Panda Project"
-        title="Panda Anna"
-        image={asset("assets/images/panda-hero-snow.jpg")}
-        modelSrc="https://dl.dropboxusercontent.com/scl/fi/lzrhfrj36kyjmq6166g4x/PANDA-3D.glb?rlkey=11rwtnihpn3ry6x4hjzo3injv"
-      />
+      <section className="page-section page-section--home-hero">
+        <MobileHero
+          className={heroClassName}
+          eyebrow="Panda Project"
+          image={asset("assets/images/panda-hero-snow.jpg")}
+          modelSrc={modelSrc}
+          title="Panda Anna"
+        />
+      </section>
 
-      {isSectionVisible("home.hubCards") && visibleHubCards.length > 0 ? (
+      {showHomeActions ? (
         <section className="page-section page-section--home-links">
-          <div className={homeLinksGridClassName}>
-            {visibleHubCards.map((card) => (
-              <FeatureCard key={card.to} {...card} />
-            ))}
+          <div
+            className={`home-support-actions${showSupportWidget ? "" : " home-support-actions--links-only"}`}
+          >
+            {showSupportWidget ? (
+              <div className="home-support-widget">
+                <GoFundMeWidget />
+              </div>
+            ) : null}
+
+            {visibleHubCards.length > 0 ? (
+              <div className={homeLinksGridClassName}>
+                {visibleHubCards.map((card) => (
+                  <FeatureCard key={card.to} {...card} />
+                ))}
+              </div>
+            ) : null}
           </div>
         </section>
       ) : null}

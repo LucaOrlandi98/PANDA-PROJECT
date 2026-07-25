@@ -14,10 +14,6 @@ const loadHomePage = () =>
   import("./pages/HomePage").then((module) => ({
     default: module.HomePage,
   }));
-const loadPandaPage = () =>
-  import("./pages/PandaPage").then((module) => ({
-    default: module.PandaPage,
-  }));
 const loadRoutePage = () =>
   import("./pages/RoutePage").then((module) => ({
     default: module.RoutePage,
@@ -44,7 +40,6 @@ const loadContactPage = () =>
   }));
 
 const HomePage = lazy(loadHomePage);
-const PandaPage = lazy(loadPandaPage);
 const RoutePage = lazy(loadRoutePage);
 const JournalPage = lazy(loadJournalPage);
 const JournalGalleryPage = lazy(loadJournalGalleryPage);
@@ -61,7 +56,6 @@ const CONTACT_NAV_ITEM = {
 
 const pageLabels: Record<string, string> = {
   "/": "Home",
-  "/panda": "Panda",
   "/route": "Roadbook",
   "/journal": "Journal",
   "/journal/foto": "Galleria",
@@ -188,7 +182,6 @@ function AppShell() {
   const isRoadbook = location.pathname === "/route";
   const defaultVisibleRoute = pickVisibleRoute([
     "/",
-    "/panda",
     "/route",
     "/journal",
     "/journal/foto",
@@ -229,8 +222,26 @@ function AppShell() {
   }, [location.pathname]);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo(0, 0);
   }, [location.pathname]);
+
+  useEffect(() => {
+    const html = document.documentElement;
+    const body = document.body;
+
+    if (isHome) {
+      html.classList.add("app-home-lock");
+      body.classList.add("app-home-lock");
+    } else {
+      html.classList.remove("app-home-lock");
+      body.classList.remove("app-home-lock");
+    }
+
+    return () => {
+      html.classList.remove("app-home-lock");
+      body.classList.remove("app-home-lock");
+    };
+  }, [isHome]);
 
   useEffect(() => {
     const root = document.getElementById("content");
@@ -342,27 +353,17 @@ function AppShell() {
             <Routes>
               <Route
                 element={renderRouteElement("/", <HomePage />, [
-                  "/panda",
                   "/route",
                   "/journal",
                   "/contact",
                 ])}
                 path="/"
               />
-              <Route element={<Navigate replace to="/panda" />} path="/project" />
-              <Route
-                element={renderRouteElement("/panda", <PandaPage />, [
-                  "/",
-                  "/route",
-                  "/journal",
-                  "/contact",
-                ])}
-                path="/panda"
-              />
+              <Route element={<Navigate replace to="/" />} path="/project" />
+              <Route element={<Navigate replace to="/" />} path="/panda" />
               <Route
                 element={renderRouteElement("/route", <RoutePage />, [
                   "/",
-                  "/panda",
                   "/journal",
                   "/contact",
                 ])}
@@ -372,7 +373,6 @@ function AppShell() {
               <Route
                 element={renderRouteElement("/journal", <JournalPage />, [
                   "/",
-                  "/panda",
                   "/route",
                   "/contact",
                 ])}
@@ -382,7 +382,6 @@ function AppShell() {
                 element={renderRouteElement("/journal/foto", <JournalGalleryPage />, [
                   "/journal",
                   "/",
-                  "/panda",
                   "/route",
                   "/contact",
                 ])}
@@ -392,7 +391,6 @@ function AppShell() {
                 element={renderRouteElement("/journal/diario", <JournalLogPage />, [
                   "/journal",
                   "/",
-                  "/panda",
                   "/route",
                   "/contact",
                 ])}
@@ -402,7 +400,6 @@ function AppShell() {
                 element={renderRouteElement("/journal/altro", <JournalOtherPage />, [
                   "/journal",
                   "/",
-                  "/panda",
                   "/route",
                   "/contact",
                 ])}
@@ -420,7 +417,6 @@ function AppShell() {
               <Route
                 element={renderRouteElement("/contact", <ContactPage />, [
                   "/",
-                  "/panda",
                   "/route",
                   "/journal",
                 ])}

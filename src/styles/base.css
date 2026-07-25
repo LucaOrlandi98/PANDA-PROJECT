@@ -27,6 +27,21 @@ body::before {
   overflow-x: clip;
 }
 
+html.app-home-lock,
+body.app-home-lock {
+  height: 100svh;
+  min-height: 100svh;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body.app-home-lock #root,
+body.app-home-lock .app-shell {
+  height: 100svh;
+  min-height: 100svh;
+  overflow: hidden;
+}
+
 .skip-link {
   position: absolute;
   left: -9999px;

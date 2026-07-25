@@ -27,7 +27,7 @@ export function JournalOtherPage() {
         : "journal.other.mechanical",
     ),
   );
-  const backLinkTarget = pickVisibleRoute(["/journal", "/", "/panda", "/route", "/contact"]);
+  const backLinkTarget = pickVisibleRoute(["/journal", "/", "/route", "/contact"]);
 
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({

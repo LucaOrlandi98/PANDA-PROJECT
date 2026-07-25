@@ -158,9 +158,19 @@
   border-left: 1px solid rgba(48, 47, 47, 0.12);
 }
 
+.footer-nav__icon-link--instagram,
+.footer-nav__desktop-icon--instagram {
+  color: rgba(48, 47, 47, 0.96);
+  background: rgba(219, 165, 106, 0.26);
+}
+
 .footer-nav__icon-link svg {
   width: 1.7rem;
   height: 1.7rem;
+}
+
+.footer-nav__toggle {
+  cursor: pointer;
 }
 
 .footer-nav__current {
@@ -193,10 +203,6 @@
   display: none;
 }
 
-.footer-nav__toggle {
-  cursor: pointer;
-}
-
 .footer-nav__toggle svg {
   width: 1.75rem;
   height: 1.75rem;
@@ -210,9 +216,16 @@
   color: var(--bg);
 }
 
+.footer-nav__icon-link--instagram:hover,
+.footer-nav__desktop-icon--instagram:hover {
+  background: rgba(219, 165, 106, 0.52);
+  color: var(--bg);
+}
+
 @media (max-width: 719px) {
   .footer-nav {
-    width: min(calc(100% - 0.75rem), var(--page-max-width));
+    top: var(--nav-offset-top);
+    width: min(calc(100% - 0.75rem - var(--safe-left) - var(--safe-right)), var(--page-max-width));
   }
 
   .footer-nav__current,
@@ -246,6 +259,7 @@
   }
 
   .menu-sheet__panel {
+    top: calc(var(--nav-offset-top) + var(--nav-height) + var(--space-sm));
     gap: var(--space-sm);
     padding: 0.9rem;
   }

@@ -3,7 +3,7 @@ import { isRouteVisible, isSectionVisible, pickVisibleRoute } from "../data/temp
 
 export function ContactPage() {
   const journalLink = isRouteVisible("/journal") ? "/journal" : undefined;
-  const fallbackLink = pickVisibleRoute(["/", "/panda", "/route"]);
+  const fallbackLink = pickVisibleRoute(["/", "/route"]);
 
   return (
     <div className="page-stack">
