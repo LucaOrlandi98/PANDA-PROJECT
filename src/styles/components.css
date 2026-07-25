@@ -1624,7 +1624,7 @@
   width: 100%;
   max-width: 420px;
   min-height: 208px;
-  justify-self: center;
+  justify-self: stretch;
   overflow: hidden;
 }
 
@@ -1853,12 +1853,13 @@
   .page-shell--home .hero-card--home .hero-media,
   .page-shell--home .hero-card--home.hero-card--home-no-aside .hero-media {
     grid-area: media;
-    width: min(100%, clamp(17.5rem, 82vw, 21rem));
-    height: 100%;
-    max-height: none;
+    width: 100%;
+    max-width: min(100%, 23rem);
+    height: min(100%, clamp(15.5rem, 41vh, 23rem));
+    max-height: clamp(15.5rem, 41vh, 23rem);
     min-height: 0;
     justify-self: center;
-    align-self: stretch;
+    align-self: center;
   }
 
   .page-shell--home .hero-card--home .hero-media.is-model,
@@ -1866,6 +1867,7 @@
     display: grid;
     place-items: center;
     min-height: 0;
+    overflow: clip;
   }
 
   .page-shell--home .hero-card--home .hero-model,
@@ -1893,12 +1895,12 @@
   }
 
   .page-shell--home .home-support-widget {
-    max-width: clamp(17.5rem, 82vw, 21rem);
+    max-width: 100%;
   }
 
   .page-shell--home .gofundme-widget-shell,
   .page-shell--home .gofundme-widget-placeholder {
-    min-height: 156px;
+    min-height: 172px;
   }
 
   .page-shell--home .gofundme-widget-placeholder {
@@ -2065,16 +2067,18 @@
 
   .page-shell--home .hero-card--home .hero-media,
   .page-shell--home .hero-card--home.hero-card--home-no-aside .hero-media {
-    width: min(100%, clamp(16.75rem, 78vw, 19.5rem));
+    max-width: min(100%, 21.5rem);
+    height: min(100%, clamp(14.5rem, 38vh, 20.5rem));
+    max-height: clamp(14.5rem, 38vh, 20.5rem);
   }
 
   .page-shell--home .home-support-widget {
-    max-width: clamp(16.75rem, 78vw, 19.5rem);
+    max-width: 100%;
   }
 
   .page-shell--home .gofundme-widget-shell,
   .page-shell--home .gofundme-widget-placeholder {
-    min-height: 136px;
+    min-height: 154px;
   }
 
   .page-shell--home .gofundme-widget-placeholder {
@@ -2100,16 +2104,18 @@
 
   .page-shell--home .hero-card--home .hero-media,
   .page-shell--home .hero-card--home.hero-card--home-no-aside .hero-media {
-    width: min(100%, clamp(15.25rem, 74vw, 17.5rem));
+    max-width: min(100%, 19rem);
+    height: min(100%, clamp(13rem, 34vh, 18rem));
+    max-height: clamp(13rem, 34vh, 18rem);
   }
 
   .page-shell--home .home-support-widget {
-    max-width: clamp(15.25rem, 74vw, 17.5rem);
+    max-width: 100%;
   }
 
   .page-shell--home .gofundme-widget-shell,
   .page-shell--home .gofundme-widget-placeholder {
-    min-height: 118px;
+    min-height: 136px;
   }
 
   .page-shell--home .gofundme-widget-placeholder {
@@ -2138,11 +2144,11 @@
 
   .page-shell--home .hero-card--home .hero-media,
   .page-shell--home .hero-card--home.hero-card--home-no-aside .hero-media {
-    width: min(100%, clamp(17rem, 76vw, 20rem));
+    max-width: min(100%, 22.5rem);
   }
 
   .page-shell--home .home-support-widget {
-    max-width: clamp(17rem, 76vw, 20rem);
+    max-width: 100%;
   }
 
   .page-shell--home .home-links-grid .action-card {

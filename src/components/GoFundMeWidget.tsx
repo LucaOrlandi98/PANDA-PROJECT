@@ -21,14 +21,14 @@ function buildWidgetSrc(rawUrl: string) {
 function getWidgetHeight(viewportWidth: number, viewportHeight = 900) {
   if (viewportWidth < 720) {
     if (viewportHeight <= 680) {
-      return 118;
-    }
-
-    if (viewportHeight <= 780) {
       return 136;
     }
 
-    return 156;
+    if (viewportHeight <= 780) {
+      return 154;
+    }
+
+    return 172;
   }
 
   if (viewportWidth < 1024) {
@@ -127,6 +127,7 @@ export function GoFundMeWidget() {
 
   const frameScale = Math.min(1, displayHeight / contentHeight);
   const scaledWidth = frameScale < 1 ? `${100 / frameScale}%` : "100%";
+  const scaledOffset = frameScale < 1 ? `${(100 - 100 / frameScale) / 2}%` : "0";
 
   return (
     <div
@@ -144,6 +145,7 @@ export function GoFundMeWidget() {
           src={iframeSrc}
           style={{
             height: `${contentHeight}px`,
+            marginLeft: scaledOffset,
             transform: `scale(${frameScale})`,
             transformOrigin: "top left",
             width: scaledWidth,

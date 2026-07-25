@@ -20,6 +20,22 @@ type HeroProps = {
   aside?: ReactNode;
 };
 
+function getHomeModelOrbit(viewportWidth: number, viewportHeight: number) {
+  if (viewportWidth < 401) {
+    return viewportHeight <= 780 ? "34deg 72deg 108%" : "34deg 72deg 102%";
+  }
+
+  if (viewportWidth < 720) {
+    return viewportHeight <= 780 ? "35deg 72deg 100%" : "35deg 72deg 96%";
+  }
+
+  if (viewportWidth < 1024) {
+    return "36deg 72deg 92%";
+  }
+
+  return "36deg 72deg 88%";
+}
+
 export function MobileHero({
   className,
   actionsClassName,
@@ -36,6 +52,28 @@ export function MobileHero({
   const [modelVersion, setModelVersion] = useState(0);
   const [isLoaded, setIsLoaded] = useState(!modelSrc);
   const [hasModelError, setHasModelError] = useState(false);
+  const [cameraOrbit, setCameraOrbit] = useState(() =>
+    typeof window === "undefined"
+      ? "36deg 72deg 88%"
+      : getHomeModelOrbit(window.innerWidth, window.innerHeight),
+  );
+
+  useEffect(() => {
+    if (!modelSrc) {
+      return;
+    }
+
+    const syncCameraOrbit = () => {
+      setCameraOrbit(getHomeModelOrbit(window.innerWidth, window.innerHeight));
+    };
+
+    syncCameraOrbit();
+    window.addEventListener("resize", syncCameraOrbit);
+
+    return () => {
+      window.removeEventListener("resize", syncCameraOrbit);
+    };
+  }, [modelSrc]);
 
   useEffect(() => {
     if (!modelSrc || !modelRef.current) {
@@ -89,9 +127,9 @@ export function MobileHero({
               poster-color="transparent"
               bounds="tight"
               camera-target="auto auto auto"
-              camera-orbit="36deg 72deg 88%"
-              min-camera-orbit="auto auto 88%"
-              max-camera-orbit="auto auto 88%"
+              camera-orbit={cameraOrbit}
+              min-camera-orbit={`auto auto ${cameraOrbit.split(" ")[2]}`}
+              max-camera-orbit={`auto auto ${cameraOrbit.split(" ")[2]}`}
               interaction-prompt="auto"
               interaction-prompt-threshold="500"
               disable-zoom
