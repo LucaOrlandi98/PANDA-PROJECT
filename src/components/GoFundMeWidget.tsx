@@ -3,6 +3,7 @@ import { useState } from "react";
 
 const GOFUNDME_WIDGET_URL =
   "https://www.gofundme.com/f/manteniamo-in-strada-panda-project/widget/medium?attribution_id=sl%3A618a6984-c4c3-4eb7-afa6-a771189109f2";
+const GOFUNDME_WIDGET_BASE_WIDTH = 420;
 
 function buildWidgetSrc(rawUrl: string) {
   const parsedUrl = new URL(rawUrl);
@@ -43,6 +44,7 @@ function getWidgetHeight(viewportWidth: number, viewportHeight = 900) {
 }
 
 export function GoFundMeWidget() {
+  const shellRef = useRef<HTMLDivElement | null>(null);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const [shouldRender, setShouldRender] = useState(false);
   const [displayHeight, setDisplayHeight] = useState(() =>
@@ -54,6 +56,11 @@ export function GoFundMeWidget() {
     typeof window === "undefined"
       ? 220
       : getWidgetHeight(window.innerWidth, window.innerHeight),
+  );
+  const [shellWidth, setShellWidth] = useState(() =>
+    typeof window === "undefined"
+      ? GOFUNDME_WIDGET_BASE_WIDTH
+      : Math.min(window.innerWidth, GOFUNDME_WIDGET_BASE_WIDTH),
   );
   const iframeSrc = useMemo(
     () => buildWidgetSrc(GOFUNDME_WIDGET_URL),
@@ -92,6 +99,32 @@ export function GoFundMeWidget() {
   }, []);
 
   useEffect(() => {
+    const shell = shellRef.current;
+
+    if (!shell) {
+      return;
+    }
+
+    const syncShellWidth = () => {
+      setShellWidth(shell.clientWidth || GOFUNDME_WIDGET_BASE_WIDTH);
+    };
+
+    syncShellWidth();
+
+    const observer = new ResizeObserver(() => {
+      syncShellWidth();
+    });
+
+    observer.observe(shell);
+    window.addEventListener("resize", syncShellWidth);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", syncShellWidth);
+    };
+  }, []);
+
+  useEffect(() => {
     if (!shouldRender) {
       return;
     }
@@ -125,13 +158,19 @@ export function GoFundMeWidget() {
     };
   }, [shouldRender]);
 
-  const frameScale = Math.min(1, displayHeight / contentHeight);
-  const scaledWidth = frameScale < 1 ? `${100 / frameScale}%` : "100%";
+  const frameScale = Math.min(
+    1,
+    shellWidth / GOFUNDME_WIDGET_BASE_WIDTH,
+    displayHeight / contentHeight,
+  );
+  const renderedHeight = Math.max(1, Math.round(contentHeight * frameScale));
+  const shellHeight = shouldRender ? renderedHeight : displayHeight;
 
   return (
     <div
+      ref={shellRef}
       className="gofundme-widget-shell"
-      style={{ height: `${displayHeight}px` }}
+      style={{ height: `${shellHeight}px` }}
     >
       {shouldRender ? (
         <iframe
@@ -145,11 +184,11 @@ export function GoFundMeWidget() {
           style={{
             height: `${contentHeight}px`,
             transform: `scale(${frameScale})`,
-            transformOrigin: "top left",
-            width: scaledWidth,
+            transformOrigin: "top center",
+            width: `${GOFUNDME_WIDGET_BASE_WIDTH}px`,
           }}
           title="GoFundMe Panda Project"
-          width="100%"
+          width={String(GOFUNDME_WIDGET_BASE_WIDTH)}
         />
       ) : (
         <div

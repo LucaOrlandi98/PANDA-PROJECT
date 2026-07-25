@@ -1630,6 +1630,9 @@
 
 .gofundme-widget-shell {
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
   width: 100%;
   min-height: 208px;
   overflow: hidden;
@@ -1637,7 +1640,7 @@
 
 .gofundme-widget-frame {
   display: block;
-  width: 100%;
+  flex: 0 0 auto;
   border: 0;
   background: #fff;
 }
