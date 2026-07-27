@@ -45,6 +45,14 @@
   transform: translateY(0);
 }
 
+.menu-sheet button:focus-visible,
+.menu-sheet a:focus-visible,
+.footer-nav a:focus-visible,
+.footer-nav button:focus-visible {
+  outline: 3px solid var(--bg);
+  outline-offset: -3px;
+}
+
 .menu-sheet__header {
   display: flex;
   justify-content: space-between;

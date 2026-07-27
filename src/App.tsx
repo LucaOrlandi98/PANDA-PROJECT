@@ -64,6 +64,16 @@ const pageLabels: Record<string, string> = {
   "/contact": "Contatti",
 };
 
+const pageTitles: Record<string, string> = {
+  "/": "Panda Project",
+  "/route": "Roadbook | Panda Project",
+  "/journal": "Journal | Panda Project",
+  "/journal/foto": "Galleria | Panda Project",
+  "/journal/diario": "Diario di bordo | Panda Project",
+  "/journal/altro": "Attrezzatura | Panda Project",
+  "/contact": "Contatti | Panda Project",
+};
+
 const revealItemSelector = [
   ".card-grid > *",
   ".home-links-grid > *",
@@ -223,6 +233,10 @@ function AppShell() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    document.title = pageTitles[location.pathname] ?? "Panda Project";
   }, [location.pathname]);
 
   useEffect(() => {

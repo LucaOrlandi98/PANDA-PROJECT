@@ -25,6 +25,16 @@ export const primaryNav: NavItem[] = [
 
 export const menuNav: NavItem[] = [
   {
+    label: "Galleria",
+    to: "/journal/foto",
+    description: "Foto e video raccolti lungo il viaggio.",
+  },
+  {
+    label: "Diario di bordo",
+    to: "/journal/diario",
+    description: "Racconti, tappe e incontri della strada.",
+  },
+  {
     label: "Attrezzatura",
     to: "/journal/altro",
     description: "Attrezzatura, note pratiche, link e materiali utili.",

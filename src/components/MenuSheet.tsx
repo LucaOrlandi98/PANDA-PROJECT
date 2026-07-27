@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import type { NavItem } from "../types/content";
 
@@ -16,6 +17,25 @@ export function MenuSheet({
   secondaryItems,
   onClose,
 }: MenuSheetProps) {
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    closeButtonRef.current?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onClose, open]);
+
   return (
     <div className={`menu-sheet ${open ? "is-open" : ""}`} aria-hidden={!open}>
       <button
@@ -30,7 +50,12 @@ export function MenuSheet({
             <p className="eyebrow">{currentLabel}</p>
             <h2>Navigazione</h2>
           </div>
-          <button className="menu-sheet__close" onClick={onClose} type="button">
+          <button
+            className="menu-sheet__close"
+            onClick={onClose}
+            ref={closeButtonRef}
+            type="button"
+          >
             Chiudi
           </button>
         </div>
