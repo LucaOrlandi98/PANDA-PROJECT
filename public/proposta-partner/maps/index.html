@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Panda Project — Maps</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="./maps.css" />
+  </head>
+  <body>
+    <main class="maps-page">
+      <header class="quick-nav">
+        <a class="map-back" href="../">← Home</a>
+        <a class="social-button social-button--instagram" href="https://www.instagram.com/lucaorlandi____/" target="_blank" rel="noreferrer" aria-label="Apri Instagram di Panda Project"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.25 2h9.5A5.25 5.25 0 0 1 22 7.25v9.5A5.25 5.25 0 0 1 16.75 22h-9.5A5.25 5.25 0 0 1 2 16.75v-9.5A5.25 5.25 0 0 1 7.25 2Zm0 2A3.25 3.25 0 0 0 4 7.25v9.5A3.25 3.25 0 0 0 7.25 20h9.5A3.25 3.25 0 0 0 20 16.75v-9.5A3.25 3.25 0 0 0 16.75 4h-9.5ZM12 6.85A5.15 5.15 0 1 1 6.85 12 5.16 5.16 0 0 1 12 6.85Zm0 2A3.15 3.15 0 1 0 15.15 12 3.15 3.15 0 0 0 12 8.85ZM17.36 5.3a1.23 1.23 0 1 1-1.23 1.23 1.23 1.23 0 0 1 1.23-1.23Z" /></svg></a>
+      </header>
+      <section class="maps-grid" aria-label="Mappe Panda Project">
+        <article class="map-block">
+          <p>My Maps</p>
+          <iframe src="https://www.google.com/maps/d/u/0/embed?mid=17lsE23viS_oQ2LHWF9lOAr3X_02dE3U" title="Panda Project My Maps" loading="lazy"></iframe>
+        </article>
+        <article class="map-block map-block--live">
+          <p>Posizione live <span id="live-status">caricamento</span></p>
+          <iframe id="live-map" title="Posizione live Panda" loading="lazy"></iframe>
+        </article>
+      </section>
+    </main>
+    <script>
+      const dataUrl = "https://script.google.com/macros/s/AKfycbxQfiZ1KIQHFH5tn7gPfkMI6-NMKUtj_uVgygG2eTaVDCW9dqIpm3bwV5TARlj6QBcz/exec?action=getLast&deviceId=cavallo";
+      const liveMap = document.querySelector("#live-map");
+      const liveStatus = document.querySelector("#live-status");
+      const showLivePosition = async () => {
+        try {
+          const response = await fetch(dataUrl, { cache: "no-store" });
+          const point = await response.json();
+          if (!point?.ok || typeof point.lat !== "number" || typeof point.lon !== "number") throw new Error("missing position");
+          const delta = .08;
+          const bbox = `${point.lon - delta},${point.lat - delta},${point.lon + delta},${point.lat + delta}`;
+          liveMap.src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${point.lat},${point.lon}`;
+          liveStatus.textContent = "live";
+        } catch {
+          liveStatus.textContent = "non disponibile";
+        }
+      };
+      showLivePosition();
+      window.setInterval(showLivePosition, 20000);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panda Project — Foto</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../style.css" /><link rel="stylesheet" href="./journal.css" />
+  </head>
+  <body><main class="journal-subpage"><header class="quick-nav"><a class="map-back" href="./index.html">← Journal</a></header><section class="journal-gallery" id="journal-gallery" aria-label="Foto dal viaggio"></section></main>
+    <script src="./content.js"></script><script>const gallery = document.querySelector("#journal-gallery"); window.PANDA_JOURNAL.gallery.forEach((src, index) => { const image = document.createElement("img"); image.src = src; image.alt = `Foto ${index + 1} dal viaggio Panda Project`; image.loading = "lazy"; gallery.append(image); });</script>
+  </body>
+</html>

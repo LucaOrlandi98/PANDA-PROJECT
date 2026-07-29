@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panda Project — Diario</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../style.css" /><link rel="stylesheet" href="./journal.css" />
+  </head>
+  <body><main class="journal-subpage"><header class="quick-nav"><a class="map-back" href="./index.html">← Journal</a></header><section class="journal-entries" id="journal-entries" aria-label="Articoli del diario"></section></main>
+    <script src="./content.js"></script><script>const entries = document.querySelector("#journal-entries"); window.PANDA_JOURNAL.entries.forEach((entry) => { const article = document.createElement("article"); article.className = "journal-entry"; const details = document.createElement("details"); const summary = document.createElement("summary"); summary.append(entry.title, Object.assign(document.createElement("span"), { textContent: "+" })); const body = document.createElement("div"); body.className = "journal-entry__body"; entry.paragraphs.forEach((paragraph) => { const text = document.createElement("p"); text.textContent = paragraph; body.append(text); }); details.append(summary, body); article.append(details); entries.append(article); });</script>
+  </body>
+</html>
