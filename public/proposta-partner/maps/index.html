@@ -27,8 +27,8 @@
           <div class="live-map-shell">
             <iframe id="live-map" title="Area approssimativa della Panda" loading="eager"></iframe>
             <span class="live-marker" aria-hidden="true"><i></i></span>
+            <div class="live-status-bar" role="status"><span>Area indicativa</span><strong id="live-status">Caricamento…</strong></div>
           </div>
-          <div class="live-status-bar" role="status"><span><i></i> Posizione approssimativa</span><strong id="live-status">Caricamento…</strong></div>
         </article>
       </section>
     </main>
@@ -44,9 +44,9 @@
           const delta = .22;
           const bbox = `${point.lon - delta},${point.lat - delta},${point.lon + delta},${point.lat + delta}`;
           liveMap.src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik`;
-          liveStatus.textContent = "Segnale ricevuto";
+          liveStatus.textContent = "Live";
         } catch {
-          liveStatus.textContent = "Non disponibile";
+          liveStatus.textContent = "No data";
         }
       };
       showLivePosition();

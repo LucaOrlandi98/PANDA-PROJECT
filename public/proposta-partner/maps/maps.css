@@ -6,12 +6,10 @@
 .map-block iframe { display:block; width:100%; height:clamp(380px,70dvh,760px); border:1px solid var(--line); background:#242322; }
 .live-map-shell { position:relative; overflow:hidden; border:1px solid var(--line); background:#242322; }
 .live-map-shell iframe { height:clamp(380px,70dvh,760px); border:0; }
-.live-marker { position:absolute; top:50%; left:50%; width:34px; height:34px; border:1px solid rgba(245,70,70,.4); border-radius:50%; background:rgba(245,70,70,.1); transform:translate(-50%,-50%); pointer-events:none; }
-.live-marker::before { content:""; position:absolute; inset:8px; border-radius:50%; background:#f45353; box-shadow:0 0 0 7px rgba(244,83,83,.17); }
-.live-marker i { position:absolute; inset:-13px; border:1px solid rgba(244,83,83,.2); border-radius:50%; animation:live-pulse 2.4s ease-out infinite; }
-.live-status-bar { display:flex; justify-content:space-between; align-items:center; gap:12px; min-height:44px; padding:10px 13px; border:1px solid var(--line); border-top:0; color:var(--muted); font-size:10px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; }
-.live-status-bar span { display:flex; align-items:center; gap:8px; }
-.live-status-bar span i { width:7px; height:7px; border-radius:50%; background:#f45353; box-shadow:0 0 0 4px rgba(244,83,83,.14); }
-.live-status-bar strong { color:var(--acid); font:inherit; text-align:right; }
+.live-marker { position:absolute; top:50%; left:50%; width:64px; height:64px; border:1px solid rgba(255,59,48,.45); border-radius:50%; background:rgba(255,59,48,.12); transform:translate(-50%,-50%); pointer-events:none; }
+.live-marker::before { content:""; position:absolute; inset:25px; border:2px solid #fff; border-radius:50%; background:#ff3b30; box-shadow:0 0 0 3px rgba(255,59,48,.35); }
+.live-marker i { position:absolute; inset:-3px; border:1px solid rgba(255,59,48,.45); border-radius:50%; animation:live-pulse 1.9s ease-out infinite; }
+.live-status-bar { position:absolute; left:8px; bottom:8px; z-index:3; display:flex; align-items:center; gap:8px; padding:6px 8px; border-radius:8px; background:rgba(0,0,0,.55); color:#fff; font:12px/1.2 system-ui; }
+.live-status-bar strong { color:#fff; font:inherit; }
 @keyframes live-pulse { 0% { transform:scale(.55); opacity:.85; } 80%,100% { transform:scale(1.35); opacity:0; } }
 @media (max-width:720px) { .maps-page { padding-top:82px; } .maps-grid { grid-template-columns:1fr; gap:24px; } .map-block iframe { height:min(62dvh,520px); } }
