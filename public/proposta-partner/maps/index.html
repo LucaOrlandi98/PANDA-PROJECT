@@ -23,8 +23,12 @@
           <iframe src="https://www.google.com/maps/d/u/0/embed?mid=17lsE23viS_oQ2LHWF9lOAr3X_02dE3U" title="Panda Project My Maps" loading="lazy"></iframe>
         </article>
         <article class="map-block map-block--live">
-          <p>Posizione live <span id="live-status">caricamento</span></p>
-          <iframe id="live-map" title="Posizione live Panda" loading="lazy"></iframe>
+          <p>Posizione live</p>
+          <div class="live-map-shell">
+            <iframe id="live-map" title="Area approssimativa della Panda" loading="eager"></iframe>
+            <span class="live-marker" aria-hidden="true"><i></i></span>
+          </div>
+          <div class="live-status-bar" role="status"><span><i></i> Posizione approssimativa</span><strong id="live-status">Caricamento…</strong></div>
         </article>
       </section>
     </main>
@@ -37,16 +41,16 @@
           const response = await fetch(dataUrl, { cache: "no-store" });
           const point = await response.json();
           if (!point?.ok || typeof point.lat !== "number" || typeof point.lon !== "number") throw new Error("missing position");
-          const delta = .08;
+          const delta = .22;
           const bbox = `${point.lon - delta},${point.lat - delta},${point.lon + delta},${point.lat + delta}`;
-          liveMap.src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${point.lat},${point.lon}`;
-          liveStatus.textContent = "live";
+          liveMap.src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik`;
+          liveStatus.textContent = "Segnale ricevuto";
         } catch {
-          liveStatus.textContent = "non disponibile";
+          liveStatus.textContent = "Non disponibile";
         }
       };
       showLivePosition();
-      window.setInterval(showLivePosition, 20000);
+      window.setInterval(showLivePosition, 60000);
     </script>
   </body>
 </html>
