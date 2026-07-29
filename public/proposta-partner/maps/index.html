@@ -8,8 +8,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
     <link rel="stylesheet" href="../style.css" />
-    <link rel="stylesheet" href="./maps.css" />
+    <link rel="stylesheet" href="./maps.css?v=live-original-1" />
   </head>
   <body>
     <main class="maps-page">
@@ -24,33 +25,80 @@
         </article>
         <article class="map-block map-block--live">
           <p>Posizione live</p>
-          <div class="live-map-shell">
-            <iframe id="live-map" title="Area approssimativa della Panda" loading="eager"></iframe>
-            <span class="live-marker" aria-hidden="true"><i></i></span>
-            <div class="live-status-bar" role="status"><span>Area indicativa</span><strong id="live-status">Caricamento…</strong></div>
+          <div class="live-map-shell" id="live-map-shell">
+            <div class="live-map-canvas" id="live-map" aria-label="Mappa posizione Panda"></div>
+            <button class="live-map-fit" id="live-map-fit" type="button">Ritrova la Panda</button>
+            <div class="live-status-bar" role="status" id="live-status">Caricamento…</div>
           </div>
         </article>
       </section>
     </main>
+    <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
     <script>
       const dataUrl = "https://script.google.com/macros/s/AKfycbxQfiZ1KIQHFH5tn7gPfkMI6-NMKUtj_uVgygG2eTaVDCW9dqIpm3bwV5TARlj6QBcz/exec?action=getLast&deviceId=cavallo";
       const liveMap = document.querySelector("#live-map");
       const liveStatus = document.querySelector("#live-status");
-      const showLivePosition = async () => {
+      const liveFit = document.querySelector("#live-map-fit");
+      const fallbackCenter = { lat: 45.57, lon: 10.24 };
+      const earthRadius = 6371000;
+      let map;
+      let marker;
+      let lastPoint = { ...fallbackCenter, radiusM: 4000 };
+
+      const pointAtDistance = (lat, lon, bearing, distance) => {
+        const lat1 = lat * Math.PI / 180;
+        const lon1 = lon * Math.PI / 180;
+        const delta = distance / earthRadius;
+        const lat2 = Math.asin(Math.sin(lat1) * Math.cos(delta) + Math.cos(lat1) * Math.sin(delta) * Math.cos(bearing));
+        const lon2 = lon1 + Math.atan2(Math.sin(bearing) * Math.sin(delta) * Math.cos(lat1), Math.cos(delta) - Math.sin(lat1) * Math.sin(lat2));
+        return [lon2 * 180 / Math.PI, lat2 * 180 / Math.PI];
+      };
+      const circleFeature = ({ lat, lon, radiusM }) => ({ type: "Feature", properties: {}, geometry: { type: "Polygon", coordinates: [[...Array.from({ length: 65 }, (_, index) => pointAtDistance(lat, lon, index / 64 * Math.PI * 2, radiusM))]] } });
+      const formatAge = (value) => {
+        const ms = typeof value === "number" ? (value < 2e10 ? value * 1000 : value) : Date.parse(value);
+        if (!Number.isFinite(ms)) return "no-ts";
+        const minutes = Math.max(0, Math.floor((Date.now() - ms) / 60000));
+        return minutes < 1 ? "now" : minutes < 60 ? `${minutes}m` : `${Math.floor(minutes / 60)}h`;
+      };
+      const fitArea = () => {
+        const points = circleFeature(lastPoint).geometry.coordinates[0];
+        const bounds = points.reduce((box, point) => box.extend(point), new maplibregl.LngLatBounds(points[0], points[0]));
+        map?.fitBounds(bounds, { padding: 24, duration: 350, maxZoom: 16 });
+      };
+      const renderPoint = (point) => {
+        lastPoint = point;
+        if (!marker) {
+          const element = document.createElement("div");
+          element.className = "panda-marker";
+          marker = new maplibregl.Marker({ element, anchor: "center" }).setLngLat([point.lon, point.lat]).addTo(map);
+        } else marker.setLngLat([point.lon, point.lat]);
+        const source = map.getSource("panda-circle-src");
+        if (source) source.setData(circleFeature(point));
+        else {
+          map.addSource("panda-circle-src", { type: "geojson", data: circleFeature(point) });
+          map.addLayer({ id: "panda-circle-fill", type: "fill", source: "panda-circle-src", paint: { "fill-color": "#ff3b30", "fill-opacity": .12 } });
+          map.addLayer({ id: "panda-circle-line", type: "line", source: "panda-circle-src", paint: { "line-color": "#ff3b30", "line-width": 1.6, "line-opacity": .35 } });
+        }
+        fitArea();
+      };
+      const fetchPosition = async () => {
         try {
           const response = await fetch(dataUrl, { cache: "no-store" });
           const point = await response.json();
           if (!point?.ok || typeof point.lat !== "number" || typeof point.lon !== "number") throw new Error("missing position");
-          const delta = .22;
-          const bbox = `${point.lon - delta},${point.lat - delta},${point.lon + delta},${point.lat + delta}`;
-          liveMap.src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik`;
-          liveStatus.textContent = "Live";
+          const nextPoint = { lat: point.lat, lon: point.lon, radiusM: typeof point.radiusM === "number" ? point.radiusM : 4000 };
+          renderPoint(nextPoint);
+          liveStatus.textContent = `live - ${formatAge(point.ts)}${point.mode ? ` - ${String(point.mode).toLowerCase()}` : ""} - r:${Math.round(nextPoint.radiusM / 1000)}km`;
         } catch {
           liveStatus.textContent = "No data";
         }
       };
-      showLivePosition();
-      window.setInterval(showLivePosition, 60000);
+      map = new maplibregl.Map({ container: liveMap, style: "https://tiles.openfreemap.org/styles/liberty", center: [fallbackCenter.lon, fallbackCenter.lat], zoom: 8, attributionControl: false, dragRotate: false, pitchWithRotate: false });
+      map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right");
+      map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
+      map.on("load", fetchPosition);
+      liveFit.addEventListener("click", fitArea);
+      window.setInterval(fetchPosition, 20000);
     </script>
   </body>
 </html>
