@@ -94,12 +94,12 @@ footer a { color:var(--ink); }
   .hero-copy { max-width:34rem; }
   .hero-copy h1 { max-width:11.5ch; }
   .hero-model { height:clamp(220px,62vw,290px); margin-top:-4px; }
-  .hero-actions { display:flex; flex-wrap:nowrap; gap:6px; margin-top:2px; width:100%; }
+  .hero-actions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; margin-top:2px; width:100%; }
   .hero-actions .gofundme-badge,
   .hero-actions .page-button { min-width:0; justify-content:center; white-space:nowrap; }
-  .hero-actions .gofundme-badge { flex:1.25; gap:0; padding:9px 10px; }
-  .hero-actions .gofundme-badge small { display:none; }
-  .hero-actions .page-button { flex:1; gap:6px; padding:9px 8px; }
+  .hero-actions .gofundme-badge { grid-column:1 / -1; gap:11px; padding:10px 12px; }
+  .hero-actions .gofundme-badge small { display:inline; padding-left:11px; }
+  .hero-actions .page-button { gap:6px; padding:9px 8px; }
   .hand-note { right:12%; top:auto; bottom:22%; font-size:clamp(24px,8vw,34px); }
   .hero-spec { right:7%; top:auto; bottom:22%; font-size:8px; }
   .counter { position:relative; grid-area:visual; justify-self:end; align-self:end; right:auto; bottom:auto; margin-top:-66px; }
