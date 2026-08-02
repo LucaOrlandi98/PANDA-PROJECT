@@ -40,16 +40,19 @@ main { overflow:hidden; }
 .hero-copy { grid-area:copy; position:relative; z-index:2; max-width:650px; }
 .kicker { margin:0 0 20px; color:var(--muted); font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; }
 h1,h2 { margin:0; font-family:"Space Grotesk",sans-serif; font-weight:600; letter-spacing:-.07em; line-height:.9; }
-h1 { font-size:clamp(50px,7vw,100px); }
+h1 { font-size:clamp(45px,5.9vw,82px); }
 .gofundme-badge { display:inline-flex; align-items:center; gap:14px; margin-top:30px; padding:10px 13px; border:1px solid var(--line); color:var(--ink); }
 .gofundme-badge span { color:var(--acid); font-family:"Space Grotesk",sans-serif; font-size:17px; font-weight:700; letter-spacing:-.07em; }
 .gofundme-badge small { padding-left:14px; border-left:1px solid var(--line); font-size:10px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; }
-.hero-actions { grid-area:actions; position:relative; z-index:3; display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+.hero-actions { grid-area:actions; position:relative; z-index:3; display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
 .hero-actions .gofundme-badge { margin-top:0; }
-.page-button { display:inline-flex; align-items:center; gap:12px; min-height:39px; padding:9px 12px; border:1px solid var(--line); color:var(--muted); font-size:11px; font-weight:600; letter-spacing:.04em; }
+.hero-actions .gofundme-badge { min-height:48px; padding:12px 16px; border-color:rgba(125,224,206,.72); background:rgba(125,224,206,.1); box-shadow:0 8px 22px rgba(0,0,0,.18); }
+.hero-actions .gofundme-badge span { font-size:20px; }
+.hero-actions .gofundme-badge small { font-size:11px; }
+.page-button { display:inline-flex; align-items:center; gap:12px; min-height:48px; padding:12px 16px; border:1px solid var(--line); color:var(--muted); font-size:12px; font-weight:600; letter-spacing:.04em; }
 .page-button span { color:var(--acid); font-size:15px; }
 .page-button:hover { border-color:var(--acid); color:var(--ink); }
-.hero-model { grid-area:visual; position:relative; z-index:1; width:100%; height:clamp(310px,46vw,540px); min-width:0; overflow:hidden; isolation:isolate; }
+.hero-model { grid-area:visual; position:relative; z-index:1; width:100%; height:clamp(310px,46vw,540px); min-width:0; overflow:hidden; isolation:isolate; transform:translateY(-14px); }
 .hero-model model-viewer { width:100%; height:100%; --poster-color:transparent; }
 .model-fallback { display:none; position:absolute; inset:50% auto auto 50%; width:min(17rem,80%); margin:0; transform:translate(-50%,-50%); color:var(--muted); font-size:12px; line-height:1.5; text-align:center; }
 .hero-model.has-error model-viewer { display:none; }
@@ -92,14 +95,14 @@ footer a { color:var(--ink); }
   .hero { grid-template-columns:1fr; grid-template-areas:"copy" "visual" "actions"; grid-template-rows:auto auto auto; align-items:start; gap:10px; min-height:0; padding-top:76px; padding-bottom:20px; }
   .route-graphic { inset:31% -30% 0 -5%; opacity:.44; }
   .hero-copy { max-width:34rem; }
-  .hero-copy h1 { max-width:11.5ch; }
-  .hero-model { height:clamp(220px,62vw,290px); margin-top:-4px; }
-  .hero-actions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; margin-top:2px; width:100%; }
+  .hero-copy h1 { max-width:12.5ch; }
+  .hero-model { height:clamp(220px,62vw,290px); margin-top:-4px; transform:translateY(-10px); }
+  .hero-actions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-top:2px; width:100%; }
   .hero-actions .gofundme-badge,
   .hero-actions .page-button { min-width:0; justify-content:center; white-space:nowrap; }
-  .hero-actions .gofundme-badge { grid-column:1 / -1; gap:11px; padding:10px 12px; }
+  .hero-actions .gofundme-badge { grid-column:1 / -1; gap:11px; min-height:52px; padding:12px 14px; }
   .hero-actions .gofundme-badge small { display:inline; padding-left:11px; }
-  .hero-actions .page-button { gap:6px; padding:9px 8px; }
+  .hero-actions .page-button { gap:6px; min-height:48px; padding:12px 8px; }
   .hand-note { right:12%; top:auto; bottom:22%; font-size:clamp(24px,8vw,34px); }
   .hero-spec { right:7%; top:auto; bottom:22%; font-size:8px; }
   .counter { position:relative; grid-area:visual; justify-self:end; align-self:end; right:auto; bottom:auto; margin-top:-66px; }
