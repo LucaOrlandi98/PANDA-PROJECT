@@ -22,25 +22,25 @@ function buildWidgetSrc(rawUrl: string) {
 function getWidgetHeight(viewportWidth: number, viewportHeight = 900) {
   if (viewportWidth < 720) {
     if (viewportHeight <= 680) {
-      return 136;
+      return 144;
     }
 
     if (viewportHeight <= 780) {
-      return 154;
+      return 164;
     }
 
-    return 172;
+    return 184;
   }
 
   if (viewportWidth < 1024) {
     if (viewportHeight <= 860) {
-      return 164;
+      return 180;
     }
 
-    return 176;
+    return 192;
   }
 
-  return 220;
+  return 236;
 }
 
 export function GoFundMeWidget() {

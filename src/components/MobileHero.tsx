@@ -158,7 +158,11 @@ export function MobileHero({
       </div>
       <div className="hero-content">
         <p className="eyebrow">{eyebrow}</p>
-        <h1>{title}</h1>
+        <h1 className="hero-title">
+          {title.split(" ").map((word) => (
+            <span key={word}>{word}</span>
+          ))}
+        </h1>
         {description ? <p className="hero-copy">{description}</p> : null}
         {primaryCta || secondaryCta ? (
           <div className={`button-row${actionsClassName ? ` ${actionsClassName}` : ""}`}>
