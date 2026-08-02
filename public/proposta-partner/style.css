@@ -49,7 +49,7 @@ h1 { font-size:clamp(42px,4.8vw,70px); }
 .hero-actions .gofundme-badge { min-height:48px; padding:12px 16px; border-color:rgba(125,224,206,.72); background:rgba(125,224,206,.1); box-shadow:0 8px 22px rgba(0,0,0,.18); }
 .hero-actions .gofundme-badge span { font-size:20px; }
 .hero-actions .gofundme-badge small { font-size:11px; }
-.page-button { display:inline-flex; align-items:center; gap:12px; min-height:48px; padding:12px 16px; border:1px solid var(--line); color:var(--muted); font-size:12px; font-weight:600; letter-spacing:.04em; }
+.page-button { display:inline-flex; align-items:center; gap:12px; min-height:48px; padding:12px 16px; border:1px solid var(--line); color:var(--muted); font-size:12px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; }
 .page-button span { color:var(--acid); font-size:15px; }
 .page-button:hover { border-color:var(--acid); color:var(--ink); }
 .hero-model { grid-area:visual; position:relative; z-index:1; width:100%; height:clamp(310px,46vw,540px); min-width:0; overflow:hidden; isolation:isolate; transform:translateY(-14px); }
