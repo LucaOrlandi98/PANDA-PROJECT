@@ -1,7 +1,9 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { cp, mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 
 const outputPath = resolve("dist", "server", "index.js");
+const proposalSourcePath = resolve("public", "proposta-partner");
+const proposalOutputPath = resolve("dist", "proposta-partner");
 
 const workerSource = `const CACHE_BUSTED_ASSET = /\\/assets\\/|\\.[a-z0-9]{2,8}$/i;
 
@@ -60,5 +62,6 @@ export default {
 };
 `;
 
+await cp(proposalSourcePath, proposalOutputPath, { recursive: true, force: true });
 await mkdir(dirname(outputPath), { recursive: true });
 await writeFile(outputPath, workerSource, "utf8");

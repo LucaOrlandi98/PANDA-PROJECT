@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Panda Project — proposta partner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Poppins:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./style.css?v=mobile-actions-6" />
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.1.1/model-viewer.min.js"></script>
+  </head>
+  <body>
+    <main>
+      <header class="quick-nav">
+        <div class="social-links" aria-label="Canali Panda Project">
+          <a class="social-button social-button--instagram" href="https://www.instagram.com/lucaorlandi____/" target="_blank" rel="noreferrer" aria-label="Apri Instagram di Panda Project"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.25 2h9.5A5.25 5.25 0 0 1 22 7.25v9.5A5.25 5.25 0 0 1 16.75 22h-9.5A5.25 5.25 0 0 1 2 16.75v-9.5A5.25 5.25 0 0 1 7.25 2Zm0 2A3.25 3.25 0 0 0 4 7.25v9.5A3.25 3.25 0 0 0 7.25 20h9.5A3.25 3.25 0 0 0 20 16.75v-9.5A3.25 3.25 0 0 0 16.75 4h-9.5ZM12 6.85A5.15 5.15 0 1 1 6.85 12 5.16 5.16 0 0 1 12 6.85Zm0 2A3.15 3.15 0 1 0 15.15 12 3.15 3.15 0 0 0 12 8.85ZM17.36 5.3a1.23 1.23 0 1 1-1.23 1.23 1.23 1.23 0 0 1 1.23-1.23Z" /></svg></a>
+          <a class="social-button social-button--youtube" href="https://www.youtube.com/@PandaProject-Luca" target="_blank" rel="noreferrer" aria-label="Apri YouTube di Panda Project"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.58 7.19a2.99 2.99 0 0 0-2.1-2.12C17.63 4.57 12 4.57 12 4.57s-5.63 0-7.48.5a3 3 0 0 0-2.1 2.12A31.1 31.1 0 0 0 1.92 12a31.1 31.1 0 0 0 .5 4.81 3 3 0 0 0 2.1 2.12c1.85.5 7.48.5 7.48.5s5.63 0 7.48-.5a2.99 2.99 0 0 0 2.1-2.12 31.1 31.1 0 0 0 .5-4.81 31.1 31.1 0 0 0-.5-4.81ZM10.2 14.95V9.05L15.4 12l-5.2 2.95Z" /></svg></a>
+        </div>
+        <button class="menu-button" id="menu-button" type="button" aria-expanded="false" aria-controls="site-menu">Menu <span aria-hidden="true">+</span></button>
+      </header>
+      <aside class="site-menu" id="site-menu" aria-hidden="true">
+        <div class="site-menu__top"><span>Panda Project</span><button id="menu-close" type="button" aria-label="Chiudi menu">×</button></div>
+        <nav aria-label="Sezioni del progetto">
+          <a href="./index.html">Home</a>
+          <a href="./maps/index.html">Maps</a>
+          <a href="./journal/index.html">Journal</a>
+          <a href="./journal/foto.html">Galleria</a>
+          <a href="./journal/diario.html">Diario</a>
+        </nav>
+      </aside>
+      <section class="hero" id="inizio">
+        <div class="route-graphic" aria-hidden="true">
+          <span class="route-graphic__vertical"></span>
+          <span class="route-graphic__horizontal"></span>
+          <span class="route-graphic__circle route-graphic__circle--one"></span>
+          <span class="route-graphic__circle route-graphic__circle--two"></span>
+        </div>
+        <div class="hero-copy">
+          <h1>La mia daily car<br />è una Panda 4×4.<br /><em>Vediamo fin dove<br />può portarmi.</em></h1>
+        </div>
+        <div class="hero-model" id="panda-model-shell">
+          <model-viewer id="panda-model" src="../assets/models/panda-3d.glb" alt="Modello 3D di Panda Anna" crossorigin="anonymous" camera-controls auto-rotate environment-image="neutral" exposure="1" shadow-intensity="0.3" bounds="tight" camera-target="auto auto auto" camera-orbit="36deg 72deg 88%" min-camera-orbit="auto auto 88%" max-camera-orbit="auto auto 88%" interaction-prompt="auto" interaction-prompt-threshold="500" disable-zoom disable-pan></model-viewer>
+          <p class="model-fallback" role="status">Il 3D non si è caricato. Ricarica la pagina oppure apri la preview nel browser.</p>
+        </div>
+        <div class="hero-actions">
+          <a class="gofundme-badge" href="https://whydonate.com/it/fundraising/portiamo-pandanna-fino-in-cina" target="_blank" rel="noreferrer"><span>WhyDonate</span><small>Sostieni il viaggio ↗</small></a>
+          <a class="page-button" href="./journal/index.html">Journal <span aria-hidden="true">↗</span></a>
+          <a class="page-button" href="./maps/index.html">Maps <span aria-hidden="true">↗</span></a>
+        </div>
+      </section>
+    </main>
+    <script>
+      const pandaModel = document.querySelector("#panda-model");
+      const pandaModelShell = document.querySelector("#panda-model-shell");
+      const menuButton = document.querySelector("#menu-button");
+      const menuClose = document.querySelector("#menu-close");
+      const siteMenu = document.querySelector("#site-menu");
+      pandaModel?.addEventListener("error", () => pandaModelShell?.classList.add("has-error"));
+      const setMenu = (open) => {
+        siteMenu?.classList.toggle("is-open", open);
+        siteMenu?.setAttribute("aria-hidden", String(!open));
+        menuButton?.setAttribute("aria-expanded", String(open));
+      };
+      menuButton?.addEventListener("click", () => setMenu(true));
+      menuClose?.addEventListener("click", () => setMenu(false));
+    </script>
+  </body>
+</html>
