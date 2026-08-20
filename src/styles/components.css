@@ -1723,6 +1723,37 @@
   box-shadow: 0 0.6rem 1.5rem rgba(0, 0, 0, 0.18);
 }
 
+.whydonate-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 4.5rem;
+  padding: 1rem 1.25rem;
+  color: var(--text-primary);
+  background: rgba(219, 165, 106, 0.1);
+  text-decoration: none;
+}
+
+.whydonate-button span {
+  font-size: clamp(1.3rem, 3vw, 1.7rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.whydonate-button small {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.whydonate-button:hover,
+.whydonate-button:focus-visible {
+  background: rgba(219, 165, 106, 0.2);
+}
+
 .gofundme-widget-shell,
 .gofundme-widget-frame {
   min-height: 0;
